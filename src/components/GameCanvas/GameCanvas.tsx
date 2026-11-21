@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+import { PLAYER_POSITION } from "../../constants";
 import { World } from "../World/World";
 
 export const GameCanvas = () => {
@@ -10,7 +11,7 @@ export const GameCanvas = () => {
                 fov: 68,
                 near: 0.1,
                 far: 500,
-                position: [0, 3.2, 0],
+                position: [...PLAYER_POSITION],
                 rotation: [-0.09, 0, 0],
             }}
             gl={{

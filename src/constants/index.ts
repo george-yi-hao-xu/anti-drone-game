@@ -7,3 +7,5 @@ export const MISSION = {
     bulletSpeed: 86,
     droneCount: 24,
 };
+
+export const PLAYER_POSITION = [0, 3.2, 0] as const;

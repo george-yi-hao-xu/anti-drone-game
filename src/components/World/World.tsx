@@ -1,4 +1,6 @@
 import { Arena } from "../Arena/Arena";
+import { DroneWave } from "../DroneWave/DroneWave";
+import { GameLoop } from "../GameLoop/GameLoop";
 
 export const World = () => (
     <>
@@ -21,5 +23,7 @@ export const World = () => (
         />
 
         <Arena />
+        <GameLoop />
+        <DroneWave />
     </>
 );

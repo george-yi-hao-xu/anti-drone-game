@@ -43,6 +43,7 @@ export class RuntimeStore {
     bullets: Bullet[] = [];
     bursts: Burst[] = [];
 
+    revision = 0;
     elapsed = 0;
     yaw = 0;
     pitch = 0;
@@ -66,6 +67,7 @@ export class RuntimeStore {
         this.drones = createDrones();
         this.bullets = [];
         this.bursts = [];
+        this.revision += 1;
         this.elapsed = 0;
         this.yaw = 0;
         this.pitch = 0;
@@ -76,6 +78,10 @@ export class RuntimeStore {
         this.lastHud = 0;
         this.lastShot = -1;
         this.ended = false;
+    }
+
+    advance(delta: number) {
+        this.elapsed += Math.max(0, delta);
     }
 }
 
