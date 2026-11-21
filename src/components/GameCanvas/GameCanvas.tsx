@@ -10,6 +10,8 @@ export const GameCanvas = () => {
                 fov: 68,
                 near: 0.1,
                 far: 500,
+                position: [0, 3.2, 0],
+                rotation: [-0.09, 0, 0],
             }}
             gl={{
                 antialias: true,
