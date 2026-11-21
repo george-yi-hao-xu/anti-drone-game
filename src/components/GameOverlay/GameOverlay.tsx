@@ -1,0 +1,106 @@
+import { observer } from "mobx-react-lite";
+import { MISSION } from "../../constants";
+import { game } from "../../stores/GameStore";
+import "./GameOverlay.scss";
+
+const Briefing = () => (
+    <section className="panel" aria-labelledby="briefing-title">
+        <p className="panel__eyebrow">Arcade defense prototype</p>
+        <h1 id="briefing-title">Anti-Drone</h1>
+        <p className="panel__lead">
+            Hold the position for {MISSION.duration} seconds. Four drone breaches
+            will end the mission.
+        </p>
+
+        <dl className="controls" aria-label="Controls">
+            <div>
+                <dt>Aim</dt>
+                <dd>Mouse</dd>
+            </div>
+            <div>
+                <dt>Fire</dt>
+                <dd>Left click</dd>
+            </div>
+            <div>
+                <dt>Reload</dt>
+                <dd>R</dd>
+            </div>
+            <div>
+                <dt>Fire mode</dt>
+                <dd>B</dd>
+            </div>
+        </dl>
+
+        <button className="button button--primary" onClick={() => game.start()}>
+            Begin defense
+        </button>
+    </section>
+);
+
+const Pause = () => (
+    <section className="panel panel--compact" aria-labelledby="pause-title">
+        <p className="panel__eyebrow">Mission interrupted</p>
+        <h1 id="pause-title">Paused</h1>
+        <p className="panel__lead">The timer and incoming drones are frozen.</p>
+        <div className="button-row">
+            <button className="button button--primary" onClick={() => game.resume()}>
+                Resume
+            </button>
+            <button className="button" onClick={() => game.start()}>
+                Restart mission
+            </button>
+        </div>
+    </section>
+);
+
+const Result = observer(({ won }: { won: boolean }) => {
+    const result = game.result;
+
+    return (
+        <section className="panel panel--compact" aria-labelledby="result-title">
+            <p className="panel__eyebrow">Mission complete</p>
+            <h1 id="result-title">{won ? "Position held" : "Position lost"}</h1>
+            <p className="panel__lead">
+                {won
+                    ? "You survived the full assault."
+                    : "The defensive position was overrun."}
+            </p>
+
+            {result && (
+                <dl className="results" aria-label="Mission results">
+                    <div>
+                        <dt>Drones destroyed</dt>
+                        <dd>{result.kills}</dd>
+                    </div>
+                    <div>
+                        <dt>Shots fired</dt>
+                        <dd>{result.shots}</dd>
+                    </div>
+                    <div>
+                        <dt>Health remaining</dt>
+                        <dd>{result.health}%</dd>
+                    </div>
+                </dl>
+            )}
+
+            <button className="button button--primary" onClick={() => game.start()}>
+                Try again
+            </button>
+        </section>
+    );
+});
+
+export const GameOverlay = observer(() => {
+    if (game.phase === "playing") {
+        return null;
+    }
+
+    return (
+        <div className={`overlay overlay--${game.phase}`}>
+            {game.phase === "briefing" && <Briefing />}
+            {game.phase === "paused" && <Pause />}
+            {game.phase === "victory" && <Result won />}
+            {game.phase === "defeat" && <Result won={false} />}
+        </div>
+    );
+});
