@@ -5,6 +5,10 @@ import type { Drone, DroneProfile } from "../types/Drone";
 import type { Burst } from "../types/Burst";
 import type { Tracer } from "../types/Tracer";
 
+const PHASE_HALF_ARCS = [30, 45, 60] as const;
+const DRONE_SPAWN_MIN_RADIUS = 170;
+const DRONE_SPAWN_RADIUS_VARIATION = 35;
+
 export function createDrones(): Drone[] {
   return Array.from({ length: MISSION.droneCount }, (_, id) => {
     const phase = id < 6 ? 0 : id < 14 ? 1 : 2
@@ -13,8 +17,17 @@ export function createDrones(): Drone[] {
     const phaseSpan = [24, 25, 28][phase]
     const count = [6, 8, 10][phase]
     const spawnAt = phaseStart + (localIndex * phaseSpan) / Math.max(1, count - 1)
-    const angle = ((id * 137.5 + 25) * Math.PI) / 180
-    const radius = 105 + ((id * 17) % 35)
+    const halfArc = PHASE_HALF_ARCS[phase]
+    const sweepStart = phase % 2 === 0 ? -halfArc : halfArc
+    const sweepEnd = -sweepStart
+    const angleDegrees = THREE.MathUtils.lerp(
+      sweepStart,
+      sweepEnd,
+      localIndex / Math.max(1, count - 1),
+    )
+    const angle = THREE.MathUtils.degToRad(angleDegrees)
+    const radius =
+      DRONE_SPAWN_MIN_RADIUS + ((id * 17) % DRONE_SPAWN_RADIUS_VARIATION)
     const profile: DroneProfile = phase === 0
       ? 'direct'
       : id % 3 === 0
