@@ -1,7 +1,18 @@
 import { observer } from "mobx-react-lite";
 import { MISSION } from "../../constants";
 import { game } from "../../stores/GameStore";
+import { requestGamePointerLock } from "../PlayerControls/pointerLock";
 import "./GameOverlay.scss";
+
+const startMission = () => {
+    game.start();
+    requestGamePointerLock();
+};
+
+const resumeMission = () => {
+    game.resume();
+    requestGamePointerLock();
+};
 
 const Briefing = () => (
     <section className="panel" aria-labelledby="briefing-title">
@@ -31,7 +42,7 @@ const Briefing = () => (
             </div>
         </dl>
 
-        <button className="button button--primary" onClick={() => game.start()}>
+        <button className="button button--primary" onClick={startMission}>
             Begin defense
         </button>
     </section>
@@ -43,10 +54,10 @@ const Pause = () => (
         <h1 id="pause-title">Paused</h1>
         <p className="panel__lead">The timer and incoming drones are frozen.</p>
         <div className="button-row">
-            <button className="button button--primary" onClick={() => game.resume()}>
+            <button className="button button--primary" onClick={resumeMission}>
                 Resume
             </button>
-            <button className="button" onClick={() => game.start()}>
+            <button className="button" onClick={startMission}>
                 Restart mission
             </button>
         </div>
@@ -83,7 +94,7 @@ const Result = observer(({ won }: { won: boolean }) => {
                 </dl>
             )}
 
-            <button className="button button--primary" onClick={() => game.start()}>
+            <button className="button button--primary" onClick={startMission}>
                 Try again
             </button>
         </section>

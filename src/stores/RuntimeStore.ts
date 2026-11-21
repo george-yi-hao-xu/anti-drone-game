@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import * as THREE from "three";
-import { MISSION } from "../constants";
+import { INITIAL_VIEW_PITCH, MISSION } from "../constants";
 import type { Drone, DroneProfile } from "../types/Drone";
 import type { Bullet } from "../types/Bullet";
 import type { Burst } from "../types/Burst";
@@ -46,7 +46,7 @@ export class RuntimeStore {
     revision = 0;
     elapsed = 0;
     yaw = 0;
-    pitch = 0;
+    pitch = INITIAL_VIEW_PITCH;
     fireHeld = false;
     reloadEnd = 0;
     recoil = 0;
@@ -70,7 +70,7 @@ export class RuntimeStore {
         this.revision += 1;
         this.elapsed = 0;
         this.yaw = 0;
-        this.pitch = 0;
+        this.pitch = INITIAL_VIEW_PITCH;
         this.fireHeld = false;
         this.reloadEnd = 0;
         this.recoil = 0;
@@ -82,6 +82,11 @@ export class RuntimeStore {
 
     advance(delta: number) {
         this.elapsed += Math.max(0, delta);
+    }
+
+    setAim(yaw: number, pitch: number) {
+        this.yaw = yaw;
+        this.pitch = pitch;
     }
 }
 

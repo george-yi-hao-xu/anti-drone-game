@@ -9,3 +9,4 @@ export const MISSION = {
 };
 
 export const PLAYER_POSITION = [0, 3.2, 0] as const;
+export const INITIAL_VIEW_PITCH = -0.09;
