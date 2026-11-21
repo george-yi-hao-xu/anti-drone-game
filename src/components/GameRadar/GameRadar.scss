@@ -1,0 +1,121 @@
+.game-radar {
+    position: absolute;
+    bottom: 28px;
+    left: 28px;
+    width: 174px;
+    height: 174px;
+    border: 1px solid rgba(125, 211, 252, 0.3);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(20, 66, 80, 0.28), rgba(3, 15, 25, 0.86) 72%),
+        rgba(3, 15, 25, 0.72);
+    box-shadow:
+        inset 0 0 28px rgba(56, 189, 248, 0.1),
+        0 10px 28px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(4px);
+}
+
+.game-radar__label {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    z-index: 2;
+    color: #73a7bf;
+    font-size: 0.58rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+}
+
+.game-radar__scope {
+    position: absolute;
+    inset: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(125, 211, 252, 0.12);
+    border-radius: 50%;
+}
+
+.game-radar__scope::before {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    z-index: 2;
+    width: 0;
+    height: 0;
+    border-right: 4px solid transparent;
+    border-bottom: 7px solid rgba(125, 211, 252, 0.75);
+    border-left: 4px solid transparent;
+    content: "";
+    transform: translateX(-50%);
+}
+
+.game-radar__ring {
+    position: absolute;
+    inset: 25%;
+    border: 1px solid rgba(125, 211, 252, 0.12);
+    border-radius: 50%;
+}
+
+.game-radar__axis {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: rgba(125, 211, 252, 0.1);
+    transform: translate(-50%, -50%);
+}
+
+.game-radar__axis--horizontal {
+    width: 100%;
+    height: 1px;
+}
+
+.game-radar__axis--vertical {
+    width: 1px;
+    height: 100%;
+}
+
+.game-radar__player,
+.game-radar__drone {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.game-radar__player {
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #dff6ff;
+    background: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
+}
+
+.game-radar__drone {
+    width: 7px;
+    height: 7px;
+    background: #fb4f63;
+    box-shadow: 0 0 7px rgba(251, 79, 99, 0.9);
+}
+
+@media (max-width: 760px) {
+    .game-radar {
+        bottom: 14px;
+        left: 14px;
+        width: 142px;
+        height: 142px;
+    }
+}
+
+@media (max-width: 420px) {
+    .game-radar {
+        width: 116px;
+        height: 116px;
+    }
+
+    .game-radar__label {
+        top: 9px;
+    }
+}

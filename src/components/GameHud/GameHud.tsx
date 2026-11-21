@@ -3,6 +3,7 @@ import { MISSION } from "../../constants";
 import { game } from "../../stores/GameStore";
 import { hud } from "../../stores/HudStore";
 import { runtime } from "../../stores/RuntimeStore";
+import { GameRadar } from "../GameRadar/GameRadar";
 import "./GameHud.scss";
 
 const formatTime = (seconds: number) => {
@@ -76,6 +77,8 @@ export const GameHud = observer(() => {
             <div className="game-hud__reticle" aria-hidden="true">
                 <span />
             </div>
+
+            <GameRadar />
 
             <section
                 className={`hud-ammo${hud.reloading ? " hud-ammo--reloading" : ""}`}
