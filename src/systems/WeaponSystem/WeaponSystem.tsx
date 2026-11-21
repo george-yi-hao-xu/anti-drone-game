@@ -1,7 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import * as THREE from "three";
-import { MISSION, PLAYER_POSITION } from "../../constants";
+import { MISSION, PLAYER_POSITION, WEAPON_MUZZLE_POSITION } from "../../constants";
 import { game } from "../../stores/GameStore";
 import { hud } from "../../stores/HudStore";
 import { runtime } from "../../stores/RuntimeStore";
@@ -49,7 +49,9 @@ function fire(camera: THREE.Camera) {
     const end = hit
         ? hit.drone.position.clone()
         : origin.clone().addScaledVector(direction, MAX_TRACER_DISTANCE);
-    const tracerStart = origin.clone().addScaledVector(direction, 1.1);
+    const tracerStart = new THREE.Vector3(...WEAPON_MUZZLE_POSITION)
+        .applyQuaternion(camera.quaternion)
+        .add(camera.position);
 
     runtime.registerShot();
     runtime.addTracer(tracerStart, end);

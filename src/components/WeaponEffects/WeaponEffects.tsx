@@ -2,7 +2,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { MISSION } from "../../constants";
+import { MISSION, WEAPON_MUZZLE_POSITION } from "../../constants";
 import { game } from "../../stores/GameStore";
 import { runtime } from "../../stores/RuntimeStore";
 import type { Burst } from "../../types/Burst";
@@ -58,7 +58,7 @@ const BurstEffect = ({ burst }: { burst: Burst }) => {
 const MuzzleFlash = () => {
     const group = useRef<THREE.Group>(null);
     const camera = useThree((state) => state.camera);
-    const direction = useMemo(() => new THREE.Vector3(), []);
+    const localMuzzle = useMemo(() => new THREE.Vector3(...WEAPON_MUZZLE_POSITION), []);
 
     useFrame(() => {
         if (!group.current) {
@@ -70,8 +70,10 @@ const MuzzleFlash = () => {
             return;
         }
 
-        camera.getWorldDirection(direction);
-        group.current.position.copy(camera.position).addScaledVector(direction, 1.05);
+        group.current.position
+            .copy(localMuzzle)
+            .applyQuaternion(camera.quaternion)
+            .add(camera.position);
         group.current.quaternion.copy(camera.quaternion);
         group.current.scale.setScalar(0.75 + Math.random() * 0.4);
     });
