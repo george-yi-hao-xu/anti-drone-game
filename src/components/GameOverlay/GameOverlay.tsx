@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { MISSION } from "../../constants";
 import { game } from "../../stores/GameStore";
-import { requestGamePointerLock } from "../PlayerControls/pointerLock";
+import { requestGamePointerLock } from "../../systems/PlayerControls/pointerLock";
 import "./GameOverlay.scss";
 
 const startMission = () => {

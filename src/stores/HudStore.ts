@@ -52,6 +52,20 @@ class HudStore {
         this.fireMode = mode;
     }
 
+    toggleFireMode() {
+        this.fireMode = this.fireMode === "AUTO" ? "SEMI" : "AUTO";
+    }
+
+    consumeRound() {
+        if (this.ammo <= 0 || this.reloading) {
+            return false;
+        }
+
+        this.ammo -= 1;
+        this.shots += 1;
+        return true;
+    }
+
     recordShot() {
         this.shots += 1;
     }
@@ -75,6 +89,14 @@ class HudStore {
 
     setReloading(reloading: boolean) {
         this.reloading = reloading;
+    }
+
+    completeReload() {
+        const needed = MISSION.magazineSize - this.ammo;
+        const transferred = Math.min(needed, this.reserve);
+        this.ammo += transferred;
+        this.reserve -= transferred;
+        this.reloading = false;
     }
 
     setMessage(message: string) {

@@ -1,7 +1,9 @@
 import { Arena } from "../Arena/Arena";
 import { DroneWave } from "../DroneWave/DroneWave";
-import { GameLoop } from "../GameLoop/GameLoop";
-import { PlayerControls } from "../PlayerControls/PlayerControls";
+import { WeaponEffects } from "../WeaponEffects/WeaponEffects";
+import { GameLoop } from "../../systems/GameLoop/GameLoop";
+import { PlayerControls } from "../../systems/PlayerControls/PlayerControls";
+import { WeaponSystem } from "../../systems/WeaponSystem/WeaponSystem";
 
 export const World = () => (
     <>
@@ -26,6 +28,8 @@ export const World = () => (
         <Arena />
         <GameLoop />
         <PlayerControls />
+        <WeaponSystem />
         <DroneWave />
+        <WeaponEffects />
     </>
 );

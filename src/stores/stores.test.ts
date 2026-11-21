@@ -97,4 +97,29 @@ describe("HUD state", () => {
         expect(hud.reserve).toBe(0);
         expect(game.sensitivity).toBe(2);
     });
+
+    it("consumes ammunition and reloads from the reserve", () => {
+        const { hud } = createStores();
+
+        expect(hud.consumeRound()).toBe(true);
+        expect(hud.ammo).toBe(MISSION.magazineSize - 1);
+        expect(hud.shots).toBe(1);
+
+        hud.setReloading(true);
+        hud.completeReload();
+
+        expect(hud.ammo).toBe(MISSION.magazineSize);
+        expect(hud.reserve).toBe(MISSION.magazineSize * MISSION.spareMagazines - 1);
+        expect(hud.reloading).toBe(false);
+    });
+
+    it("switches between automatic and semi-automatic fire", () => {
+        const { hud } = createStores();
+
+        hud.toggleFireMode();
+        expect(hud.fireMode).toBe("SEMI");
+
+        hud.toggleFireMode();
+        expect(hud.fireMode).toBe("AUTO");
+    });
 });

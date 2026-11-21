@@ -2,8 +2,8 @@ import { makeAutoObservable } from "mobx";
 import * as THREE from "three";
 import { INITIAL_VIEW_PITCH, MISSION } from "../constants";
 import type { Drone, DroneProfile } from "../types/Drone";
-import type { Bullet } from "../types/Bullet";
 import type { Burst } from "../types/Burst";
+import type { Tracer } from "../types/Tracer";
 
 export function createDrones(): Drone[] {
   return Array.from({ length: MISSION.droneCount }, (_, id) => {
@@ -40,16 +40,19 @@ export function createDrones(): Drone[] {
 
 export class RuntimeStore {
     drones: Drone[] = createDrones();
-    bullets: Bullet[] = [];
+    tracers: Tracer[] = [];
     bursts: Burst[] = [];
 
     revision = 0;
+    effectRevision = 0;
+    nextEffectId = 1;
     elapsed = 0;
     yaw = 0;
     pitch = INITIAL_VIEW_PITCH;
     fireHeld = false;
     reloadEnd = 0;
     recoil = 0;
+    muzzleFlash = 0;
     cameraShake = 0;
     lastHud = 0;
     lastShot = -1;
@@ -58,22 +61,25 @@ export class RuntimeStore {
     constructor() {
         makeAutoObservable(this, {
             drones: false,
-            bullets: false,
+            tracers: false,
             bursts: false,
         });
     }
 
     reset() {
         this.drones = createDrones();
-        this.bullets = [];
+        this.tracers = [];
         this.bursts = [];
         this.revision += 1;
+        this.effectRevision += 1;
+        this.nextEffectId = 1;
         this.elapsed = 0;
         this.yaw = 0;
         this.pitch = INITIAL_VIEW_PITCH;
         this.fireHeld = false;
         this.reloadEnd = 0;
         this.recoil = 0;
+        this.muzzleFlash = 0;
         this.cameraShake = 0;
         this.lastHud = 0;
         this.lastShot = -1;
@@ -87,6 +93,61 @@ export class RuntimeStore {
     setAim(yaw: number, pitch: number) {
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    setFireHeld(held: boolean) {
+        this.fireHeld = held;
+    }
+
+    registerShot() {
+        this.lastShot = this.elapsed;
+        this.recoil = Math.min(0.11, this.recoil + MISSION.recoilKick);
+        this.muzzleFlash = 0.045;
+    }
+
+    beginReload() {
+        this.fireHeld = false;
+        this.reloadEnd = this.elapsed + MISSION.reloadSeconds;
+    }
+
+    addTracer(start: THREE.Vector3, end: THREE.Vector3) {
+        this.tracers.push({
+            id: this.nextEffectId++,
+            start: start.clone(),
+            end: end.clone(),
+            life: MISSION.tracerSeconds,
+        });
+        this.effectRevision += 1;
+    }
+
+    addBurst(position: THREE.Vector3, unsafe = false) {
+        this.bursts.push({
+            id: this.nextEffectId++,
+            position: position.clone(),
+            life: MISSION.burstSeconds,
+            unsafe,
+        });
+        this.effectRevision += 1;
+    }
+
+    updateWeaponEffects(delta: number) {
+        this.muzzleFlash = Math.max(0, this.muzzleFlash - delta);
+        this.recoil = Math.max(0, this.recoil - delta * 0.12);
+
+        const tracerCount = this.tracers.length;
+        const burstCount = this.bursts.length;
+        this.tracers.forEach((tracer) => {
+            tracer.life -= delta;
+        });
+        this.bursts.forEach((burst) => {
+            burst.life -= delta;
+        });
+        this.tracers = this.tracers.filter((tracer) => tracer.life > 0);
+        this.bursts = this.bursts.filter((burst) => burst.life > 0);
+
+        if (tracerCount !== this.tracers.length || burstCount !== this.bursts.length) {
+            this.effectRevision += 1;
+        }
     }
 }
 

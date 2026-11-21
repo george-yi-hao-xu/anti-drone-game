@@ -6,6 +6,11 @@ export const MISSION = {
     reloadSeconds: 2.2,
     bulletSpeed: 86,
     droneCount: 24,
+    fireInterval: 0.1,
+    hitRadius: 2,
+    tracerSeconds: 0.07,
+    burstSeconds: 0.38,
+    recoilKick: 0.028,
 };
 
 export const PLAYER_POSITION = [0, 3.2, 0] as const;

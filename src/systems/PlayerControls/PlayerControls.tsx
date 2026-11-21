@@ -52,7 +52,7 @@ export const PlayerControls = () => {
     }, [camera, canvas]);
 
     useFrame(() => {
-        camera.rotation.set(runtime.pitch, runtime.yaw, 0, "YXZ");
+        camera.rotation.set(runtime.pitch + runtime.recoil, runtime.yaw, 0, "YXZ");
     });
 
     return null;
