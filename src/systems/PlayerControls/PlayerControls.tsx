@@ -1,5 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
+import { PLAYER_POSITION } from "../../constants";
 import { game } from "../../stores/GameStore";
 import { runtime } from "../../stores/RuntimeStore";
 import { applyPointerMovement } from "./aimMath";
@@ -52,7 +53,20 @@ export const PlayerControls = () => {
     }, [camera, canvas]);
 
     useFrame(() => {
-        camera.rotation.set(runtime.pitch + runtime.recoil, runtime.yaw, 0, "YXZ");
+        const shake = runtime.cameraShake;
+        const shakeTime = runtime.elapsed * 76;
+
+        camera.position.set(
+            PLAYER_POSITION[0] + Math.sin(shakeTime) * shake * 0.16,
+            PLAYER_POSITION[1] + Math.cos(shakeTime * 0.83) * shake * 0.12,
+            PLAYER_POSITION[2],
+        );
+        camera.rotation.set(
+            runtime.pitch + runtime.recoil + Math.sin(shakeTime * 0.71) * shake * 0.04,
+            runtime.yaw + Math.cos(shakeTime) * shake * 0.05,
+            Math.sin(shakeTime * 0.55) * shake * 0.035,
+            "YXZ",
+        );
     });
 
     return null;

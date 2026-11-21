@@ -27,7 +27,7 @@ export const DroneModel = ({ drone }: { drone: Drone }) => {
             return;
         }
 
-        group.current.visible = drone.active && !drone.destroyed;
+        group.current.visible = drone.active && !drone.destroyed && !drone.breached;
         if (!group.current.visible) {
             return;
         }

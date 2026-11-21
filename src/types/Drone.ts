@@ -12,5 +12,6 @@ export interface Drone {
   progress: number
   active: boolean
   destroyed: boolean
+  breached: boolean
   phase: number
 }

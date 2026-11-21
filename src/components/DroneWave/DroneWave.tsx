@@ -14,7 +14,7 @@ export const DroneWave = observer(() => {
         }
 
         runtime.drones.forEach((drone) => {
-            if (drone.destroyed || runtime.elapsed < drone.spawnAt) {
+            if (drone.destroyed || drone.breached || runtime.elapsed < drone.spawnAt) {
                 drone.active = false;
                 return;
             }

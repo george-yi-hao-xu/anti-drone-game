@@ -33,6 +33,7 @@ export function createDrones(): Drone[] {
       progress: 0,
       active: false,
       destroyed: false,
+      breached: false,
       phase: (id * 1.73) % 6.28,
     }
   })
@@ -130,9 +131,14 @@ export class RuntimeStore {
         this.effectRevision += 1;
     }
 
-    updateWeaponEffects(delta: number) {
+    triggerCameraShake(amount: number) {
+        this.cameraShake = Math.max(this.cameraShake, Math.max(0, amount));
+    }
+
+    updateEffects(delta: number) {
         this.muzzleFlash = Math.max(0, this.muzzleFlash - delta);
         this.recoil = Math.max(0, this.recoil - delta * 0.12);
+        this.cameraShake = Math.max(0, this.cameraShake - delta * 0.65);
 
         const tracerCount = this.tracers.length;
         const burstCount = this.bursts.length;

@@ -92,7 +92,7 @@ export const WeaponEffects = observer(() => {
 
     useFrame((_, delta) => {
         if (game.phase === "playing") {
-            runtime.updateWeaponEffects(Math.min(delta, 0.05));
+            runtime.updateEffects(Math.min(delta, 0.05));
         }
     });
 

@@ -1,6 +1,7 @@
 export const MISSION = {
     duration: 90,
     safetyRadius: 20,
+    breachDamage: 25,
     magazineSize: 30,
     spareMagazines: 6,
     reloadSeconds: 2.2,
