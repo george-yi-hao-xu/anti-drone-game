@@ -16,34 +16,33 @@ const resumeMission = () => {
 
 const Briefing = () => (
     <section className="panel" aria-labelledby="briefing-title">
-        <p className="panel__eyebrow">Arcade defense prototype</p>
-        <h1 id="briefing-title">Anti-Drone</h1>
+        {/* <p className="panel__eyebrow">Arcade defense prototype</p> */}
+        <h1 id="briefing-title">Shoot down FPVs</h1>
         <p className="panel__lead">
-            Hold the position for {MISSION.duration} seconds. Four drone breaches
-            will end the mission.
+            Hold your position for {MISSION.duration} seconds. Shoot down all drones!
         </p>
 
         <dl className="controls" aria-label="Controls">
             <div>
-                <dt>Aim</dt>
+                <dt>View</dt>
                 <dd>Mouse</dd>
             </div>
             <div>
                 <dt>Fire</dt>
-                <dd>Left click</dd>
+                <dd>Left Mouse Click</dd>
             </div>
             <div>
                 <dt>Reload</dt>
-                <dd>R</dd>
+                <dd>Press R</dd>
             </div>
             <div>
-                <dt>Fire mode</dt>
-                <dd>B</dd>
+                <dt>Switch Fire mode</dt>
+                <dd>Press B</dd>
             </div>
         </dl>
 
         <button className="button button--primary" onClick={startMission}>
-            Begin defense
+            Start Game
         </button>
     </section>
 );
@@ -70,7 +69,7 @@ const Result = observer(({ won }: { won: boolean }) => {
     return (
         <section className="panel panel--compact" aria-labelledby="result-title">
             <p className="panel__eyebrow">Mission complete</p>
-            <h1 id="result-title">{won ? "Position held" : "Position lost"}</h1>
+            <h1 id="result-title">{won ? "WIN!" : "Position lost"}</h1>
             <p className="panel__lead">
                 {won
                     ? "You survived the full assault."

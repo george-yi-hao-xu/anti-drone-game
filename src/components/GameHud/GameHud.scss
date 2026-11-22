@@ -1,43 +1,43 @@
+@use "../../global" as tokens;
+
 .game-hud {
     position: absolute;
     inset: 0;
-    z-index: 5;
+    z-index: tokens.$layer-hud;
     pointer-events: none;
-    color: #e8f7ff;
+    color: tokens.$color-text-primary;
     font-variant-numeric: tabular-nums;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    text-shadow: tokens.$text-shadow-hud;
 }
 
 .game-hud__top-left,
 .game-hud__top-right {
     position: absolute;
-    top: 28px;
+    top: tokens.$space-xl;
     display: flex;
-    gap: 10px;
+    gap: tokens.$space-sm;
 }
 
 .game-hud__top-left {
-    left: 28px;
+    left: tokens.$space-xl;
 }
 
 .game-hud__top-right {
-    right: 28px;
+    right: tokens.$space-xl;
 }
 
 .hud-panel,
 .hud-ammo {
-    border: 1px solid rgba(125, 211, 252, 0.28);
-    background: linear-gradient(135deg, rgba(4, 15, 27, 0.88), rgba(8, 30, 46, 0.66));
-    box-shadow:
-        inset 0 0 20px rgba(56, 189, 248, 0.05),
-        0 10px 28px rgba(0, 0, 0, 0.24);
-    backdrop-filter: blur(5px);
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    background: tokens.$background-hud-panel;
+    box-shadow: tokens.$shadow-hud-panel;
+    backdrop-filter: blur(tokens.$blur-panel);
 }
 
 .hud-panel {
     min-width: 126px;
-    padding: 12px 15px;
-    border-radius: 8px;
+    padding: tokens.$space-md;
+    border-radius: tokens.$radius-md;
 }
 
 .hud-panel--mission {
@@ -54,18 +54,18 @@
 
 .hud-label {
     display: block;
-    color: #73a7bf;
+    color: tokens.$color-text-muted;
     font-size: 0.64rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
+    font-weight: tokens.$font-weight-bold;
+    letter-spacing: tokens.$tracking-label;
     line-height: 1;
     text-transform: uppercase;
 }
 
 .hud-time {
     display: block;
-    margin-top: 4px;
-    color: #7dd3fc;
+    margin-top: tokens.$space-xs;
+    color: tokens.$color-accent;
     font-size: 1.65rem;
     line-height: 1;
     letter-spacing: 0.04em;
@@ -73,9 +73,9 @@
 
 .hud-panel--compact strong {
     display: block;
-    margin-top: 5px;
-    color: #dff6ff;
-    font-size: 1rem;
+    margin-top: tokens.$space-xs;
+    color: tokens.$color-text-primary;
+    font-size: tokens.$font-size-body;
 }
 
 .hud-row {
@@ -85,36 +85,38 @@
 }
 
 .hud-row strong {
-    color: #dff6ff;
+    color: tokens.$color-text-primary;
     font-size: 0.86rem;
 }
 
 .hud-meter {
     height: 5px;
-    margin-top: 10px;
+    margin-top: tokens.$space-sm;
     overflow: hidden;
-    border-radius: 999px;
-    background: rgba(125, 211, 252, 0.12);
+    border-radius: tokens.$radius-pill;
+    background: rgba(tokens.$color-accent, 0.12);
 }
 
 .hud-meter__fill {
     display: block;
     height: 100%;
     border-radius: inherit;
-    transition: width 180ms ease, background 180ms ease;
+    transition:
+        width tokens.$duration-standard ease,
+        background tokens.$duration-standard ease;
 }
 
 .hud-meter__fill--ready {
-    background: #38bdf8;
+    background: tokens.$color-accent;
 }
 
 .hud-meter__fill--warning {
-    background: #fbbf24;
+    background: tokens.$color-warning;
 }
 
 .hud-meter__fill--critical {
-    background: #fb7185;
-    box-shadow: 0 0 12px rgba(251, 113, 133, 0.7);
+    background: tokens.$color-danger;
+    box-shadow: tokens.$glow-danger;
 }
 
 .game-hud__status {
@@ -123,29 +125,29 @@
     left: 50%;
     display: grid;
     justify-items: center;
-    gap: 5px;
+    gap: tokens.$space-xs;
     transform: translateX(-50%);
 }
 
 .hud-status,
 .hud-range {
-    padding: 5px 10px;
-    border: 1px solid rgba(125, 211, 252, 0.2);
-    border-radius: 4px;
-    color: #7dd3fc;
-    background: rgba(3, 13, 24, 0.7);
+    padding: tokens.$space-xs tokens.$space-sm;
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    border-radius: tokens.$radius-sm;
+    color: tokens.$color-accent;
+    background: tokens.$background-hud-status;
     font-size: 0.63rem;
-    font-weight: 850;
-    letter-spacing: 0.14em;
+    font-weight: tokens.$font-weight-bold;
+    letter-spacing: tokens.$tracking-label;
 }
 
 .hud-status--danger {
-    border-color: rgba(251, 113, 133, 0.45);
-    color: #fda4af;
+    border-color: rgba(tokens.$color-danger, 0.45);
+    color: tokens.$color-danger;
 }
 
 .hud-range {
-    color: #c8eafb;
+    color: tokens.$color-text-primary;
 }
 
 .game-hud__reticle {
@@ -154,8 +156,8 @@
     left: 50%;
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(125, 211, 252, 0.62);
-    border-radius: 50%;
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.7);
+    border-radius: tokens.$radius-round;
     transform: translate(-50%, -50%);
 }
 
@@ -166,8 +168,8 @@
     top: 50%;
     left: 50%;
     content: "";
-    background: #dff6ff;
-    box-shadow: 0 0 5px rgba(56, 189, 248, 0.9);
+    background: tokens.$color-text-primary;
+    box-shadow: tokens.$glow-accent;
     transform: translate(-50%, -50%);
 }
 
@@ -186,91 +188,91 @@
 .game-hud__reticle span {
     width: 3px;
     height: 3px;
-    border-radius: 50%;
+    border-radius: tokens.$radius-round;
 }
 
 .hud-ammo {
     position: absolute;
-    right: 28px;
-    bottom: 28px;
+    right: tokens.$space-xl;
+    bottom: tokens.$space-xl;
     width: 230px;
-    padding: 15px 17px;
+    padding: tokens.$space-md 17px;
     border-radius: 9px;
 }
 
 .hud-ammo--reloading {
-    border-color: rgba(251, 191, 36, 0.5);
+    border-color: rgba(tokens.$color-warning, 0.5);
 }
 
 .hud-ammo__count {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    margin-top: 4px;
+    margin-top: tokens.$space-xs;
 }
 
 .hud-ammo__count strong {
-    color: #f5fbff;
+    color: tokens.$color-text-primary;
     font-size: 2.7rem;
-    line-height: 0.95;
+    line-height: tokens.$line-height-tight;
     letter-spacing: -0.04em;
 }
 
 .hud-ammo__count span {
-    color: #75a8c0;
-    font-size: 1rem;
-    font-weight: 750;
+    color: tokens.$color-text-muted;
+    font-size: tokens.$font-size-body;
+    font-weight: tokens.$font-weight-bold;
 }
 
 .hud-ammo__magazine {
     display: grid;
     grid-template-columns: repeat(15, 1fr);
     gap: 3px;
-    margin-top: 10px;
+    margin-top: tokens.$space-sm;
 }
 
 .hud-ammo__magazine span {
     height: 7px;
     border-radius: 1px;
-    background: rgba(125, 211, 252, 0.12);
+    background: rgba(tokens.$color-accent, 0.12);
 }
 
 .hud-ammo__magazine .is-loaded {
-    background: #38bdf8;
-    box-shadow: 0 0 5px rgba(56, 189, 248, 0.55);
+    background: tokens.$color-accent;
+    box-shadow: tokens.$glow-accent;
 }
 
 .hud-reload {
     height: 3px;
     margin-top: 9px;
     overflow: hidden;
-    background: rgba(251, 191, 36, 0.14);
+    background: rgba(tokens.$color-warning, 0.14);
 }
 
 .hud-reload span {
     display: block;
     height: 100%;
-    background: #fbbf24;
+    background: tokens.$color-warning;
 }
 
-@media (max-width: 760px) {
+@media (max-width: tokens.$breakpoint-compact) {
     .game-hud__top-left,
     .game-hud__top-right {
-        top: 14px;
+        top: tokens.$space-md;
         gap: 6px;
     }
 
     .game-hud__top-left {
-        left: 14px;
+        left: tokens.$space-md;
     }
 
     .game-hud__top-right {
-        right: 14px;
+        right: tokens.$space-md;
     }
 
     .hud-panel {
         min-width: 0;
-        padding: 9px 10px;
+        padding: 9px tokens.$space-sm;
     }
 
     .hud-panel--health {
@@ -282,19 +284,19 @@
     }
 
     .hud-ammo {
-        right: 14px;
-        bottom: 14px;
+        right: tokens.$space-md;
+        bottom: tokens.$space-md;
         width: 190px;
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: tokens.$breakpoint-hud-small) {
     .hud-panel--health,
     .game-hud__top-right .hud-panel:first-child {
         display: none;
     }
 
     .hud-time {
-        font-size: 1.35rem;
+        font-size: tokens.$font-size-heading-sm;
     }
 }

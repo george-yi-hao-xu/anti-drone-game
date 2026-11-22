@@ -1,25 +1,27 @@
+@use "../../global" as tokens;
+
 .overlay {
     position: absolute;
     inset: 0;
-    z-index: 10;
+    z-index: tokens.$layer-overlay;
     display: grid;
     place-items: center;
-    padding: 24px;
-    background: rgba(3, 10, 20, 0.42);
-    backdrop-filter: blur(8px);
+    padding: tokens.$space-lg;
+    background: tokens.$background-overlay;
+    backdrop-filter: blur(tokens.$blur-overlay);
 }
 
 .overlay--paused {
-    background: rgba(3, 10, 20, 0.62);
+    background: tokens.$background-overlay-paused;
 }
 
 .panel {
     width: min(100%, 620px);
-    padding: clamp(28px, 5vw, 54px);
-    border: 1px solid rgba(125, 211, 252, 0.3);
-    border-radius: 24px;
-    background: rgba(8, 22, 40, 0.92);
-    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+    padding: clamp(tokens.$space-xl, 5vw, 54px);
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    border-radius: tokens.$radius-xl;
+    background: tokens.$background-overlay-panel;
+    box-shadow: tokens.$shadow-overlay-panel;
     text-align: center;
 }
 
@@ -28,17 +30,17 @@
 }
 
 .panel__eyebrow {
-    margin-bottom: 10px;
-    color: #38bdf8;
+    margin-bottom: tokens.$space-sm;
+    color: tokens.$color-accent;
     font-size: 0.76rem;
-    font-weight: 800;
+    font-weight: tokens.$font-weight-bold;
     letter-spacing: 0.18em;
     text-transform: uppercase;
 }
 
 .panel h1 {
     font-size: clamp(2.6rem, 8vw, 5.2rem);
-    line-height: 0.95;
+    line-height: tokens.$line-height-tight;
     letter-spacing: -0.055em;
 }
 
@@ -49,30 +51,29 @@
 .panel__lead {
     max-width: 48ch;
     margin: 22px auto 0;
-    color: #a9bdd1;
-    font-size: 1rem;
+    color: tokens.$color-text-muted;
+    font-size: tokens.$font-size-body;
     line-height: 1.65;
 }
 
 .controls,
 .results {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 28px 0;
+    grid-template-columns: repeat(4, 1fr);
+    gap: tokens.$space-sm;
+    margin: tokens.$space-xl 0;
 }
 
 .controls div,
 .results div {
-    padding: 14px;
-    border: 1px solid rgba(148, 200, 230, 0.14);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.035);
+    padding: tokens.$space-md;
+    border-radius: tokens.$radius-lg;
+    background: tokens.$background-overlay-card;
 }
 
 .controls dt,
 .results dt {
-    color: #7890a7;
+    color: tokens.$color-text-muted;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -81,9 +82,9 @@
 
 .controls dd,
 .results dd {
-    margin-top: 5px;
-    color: #f6fbff;
-    font-weight: 750;
+    margin-top: tokens.$space-xs;
+    color: tokens.$color-text-primary;
+    font-weight: tokens.$font-weight-bold;
 }
 
 .results {
@@ -91,52 +92,52 @@
 }
 
 .results dd {
-    color: #7dd3fc;
-    font-size: 1.35rem;
+    color: tokens.$color-accent;
+    font-size: tokens.$font-size-heading-sm;
 }
 
 .button-row {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 28px;
+    gap: tokens.$space-sm;
+    margin-top: tokens.$space-xl;
 }
 
 .button {
     min-width: 150px;
     padding: 13px 20px;
-    border: 1px solid rgba(125, 211, 252, 0.3);
-    border-radius: 999px;
-    color: #d9efff;
-    background: rgba(125, 211, 252, 0.08);
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    border-radius: tokens.$radius-pill;
+    color: tokens.$color-text-primary;
+    background: rgba(tokens.$color-accent, 0.12);
     cursor: pointer;
-    font-weight: 800;
+    font-weight: tokens.$font-weight-bold;
     transition:
-        transform 150ms ease,
-        background 150ms ease;
+        transform tokens.$duration-standard ease,
+        background tokens.$duration-standard ease;
 }
 
 .button:hover {
     transform: translateY(-2px);
-    background: rgba(125, 211, 252, 0.15);
+    background: rgba(tokens.$color-accent, 0.18);
 }
 
 .button:focus-visible {
-    outline: 3px solid rgba(56, 189, 248, 0.55);
+    outline: tokens.$outline-focus;
     outline-offset: 3px;
 }
 
 .button--primary {
     border-color: transparent;
-    color: #04111d;
-    background: #38bdf8;
+    color: tokens.$color-background;
+    background: tokens.$color-accent;
 }
 
 .button--primary:hover {
-    background: #7dd3fc;
+    background: tokens.$color-accent;
 }
 
-@media (max-width: 520px) {
+@media (max-width: tokens.$breakpoint-overlay) {
     .controls,
     .results {
         grid-template-columns: 1fr;
