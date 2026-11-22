@@ -4,13 +4,14 @@
     position: absolute;
     bottom: tokens.$space-xl;
     left: tokens.$space-xl;
-    width: 174px;
-    height: 174px;
+    width: 240px;
+    height: 240px;
     border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
     border-radius: tokens.$radius-round;
     background: tokens.$background-radar;
     box-shadow: tokens.$shadow-radar;
     backdrop-filter: blur(tokens.$blur-panel);
+    opacity: 0.75;
 }
 
 .game-radar__label {
@@ -34,19 +35,19 @@
     border-radius: tokens.$radius-round;
 }
 
-.game-radar__scope::before {
-    position: absolute;
-    top: tokens.$space-xs;
-    left: 50%;
-    z-index: tokens.$layer-radar-label;
-    width: 0;
-    height: 0;
-    border-right: 4px solid transparent;
-    border-bottom: 7px solid rgba(tokens.$color-accent, 0.7);
-    border-left: 4px solid transparent;
-    content: "";
-    transform: translateX(-50%);
-}
+// .game-radar__scope::before {
+//     position: absolute;
+//     top: tokens.$space-xs;
+//     left: 50%;
+//     z-index: tokens.$layer-radar-label;
+//     width: 0;
+//     height: 0;
+//     border-right: 4px solid transparent;
+//     border-bottom: 7px solid rgba(tokens.$color-accent, 0.7);
+//     border-left: 4px solid transparent;
+//     content: "";
+//     transform: translateX(-50%);
+// }
 
 .game-radar__ring {
     position: absolute;
@@ -71,6 +72,16 @@
 .game-radar__axis--vertical {
     width: 1px;
     height: 100%;
+}
+
+.game-radar__north {
+    position: absolute;
+    z-index: tokens.$layer-radar-label;
+    color: tokens.$color-accent;
+    font-size: 1rem;
+    font-weight: tokens.$font-weight-bold;
+    line-height: 1;
+    text-shadow: tokens.$glow-accent;
 }
 
 .game-radar__player,
