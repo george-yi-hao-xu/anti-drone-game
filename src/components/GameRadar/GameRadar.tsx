@@ -6,6 +6,13 @@ import { projectToRadar } from "./radarMath";
 import "./GameRadar.scss";
 
 const RADAR_RANGE = 140;
+const CARDINAL_DIRECTIONS = [
+    { label: "N", x: 0, z: -1 },
+    { label: "E", x: 1, z: 0 },
+    { label: "S", x: 0, z: 1 },
+    { label: "W", x: -1, z: 0 },
+] as const;
+const CARDINAL_OFFSET_PX = 12;
 
 export const GameRadar = observer(() => {
     // Reading elapsed keeps this DOM display synchronized with the Three.js frame loop.
@@ -13,7 +20,6 @@ export const GameRadar = observer(() => {
     const visibleDrones = runtime.drones.filter(
         (drone) => elapsed >= drone.spawnAt && !drone.destroyed && !drone.breached,
     );
-    const north = projectToRadar(0, -1, 1, runtime.yaw);
 
     return (
         <section
@@ -23,18 +29,33 @@ export const GameRadar = observer(() => {
             {/* <span className="game-radar__label">Radar</span> */}
             <div className="game-radar__scope" aria-hidden="true">
                 <span className="game-radar__ring" />
-                <span className="game-radar__axis game-radar__axis--horizontal" />
-                <span className="game-radar__axis game-radar__axis--vertical" />
-                <span
-                    className="game-radar__north"
-                    style={{
-                        left: `${north.left}%`,
-                        top: `${north.top}%`,
-                        transform: `translate(-50%, -50%) rotate(${runtime.yaw}rad) translateY(-12px)`,
-                    }}
+                <div
+                    className="game-radar__axes"
+                    style={{ transform: `rotate(${runtime.yaw}rad)` }}
                 >
-                    N
-                </span>
+                    <span className="game-radar__axis game-radar__axis--horizontal" />
+                    <span className="game-radar__axis game-radar__axis--vertical" />
+                </div>
+                {CARDINAL_DIRECTIONS.map(({ label, x, z }) => {
+                    const point = projectToRadar(x, z, 1, runtime.yaw);
+                    const directionX = point.left - 50;
+                    const directionY = point.top - 50;
+                    const directionLength = Math.hypot(directionX, directionY);
+
+                    return (
+                        <span
+                            key={label}
+                            className="game-radar__cardinal"
+                            style={{
+                                left: `calc(${point.left}% + ${(directionX / directionLength) * CARDINAL_OFFSET_PX}px)`,
+                                top: `calc(${point.top}% + ${(directionY / directionLength) * CARDINAL_OFFSET_PX}px)`,
+                                transform: `translate(-50%, -50%) rotate(${runtime.yaw}rad)`,
+                            }}
+                        >
+                            {label}
+                        </span>
+                    );
+                })}
                 <span className="game-radar__player" />
 
                 {visibleDrones.map((drone) => {

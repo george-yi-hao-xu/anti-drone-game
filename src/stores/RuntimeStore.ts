@@ -13,8 +13,10 @@ export function createDrones(): Drone[] {
   return Array.from({ length: MISSION.droneCount }, (_, id) => {
     const phase = id < 6 ? 0 : id < 14 ? 1 : 2
     const localIndex = phase === 0 ? id : phase === 1 ? id - 6 : id - 14
-    const phaseStart = [4, 31, 59][phase]
-    const phaseSpan = [24, 25, 28][phase]
+
+    const phaseStart = [1, 20, 40][phase]
+    const phaseSpan = [9, 5, 10][phase]
+
     const count = [6, 8, 10][phase]
     const spawnAt = phaseStart + (localIndex * phaseSpan) / Math.max(1, count - 1)
     const halfArc = PHASE_HALF_ARCS[phase]

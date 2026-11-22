@@ -30,7 +30,7 @@
 .game-radar__scope {
     position: absolute;
     inset: tokens.$space-md;
-    overflow: hidden;
+    overflow: visible;
     border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.12);
     border-radius: tokens.$radius-round;
 }
@@ -56,6 +56,12 @@
     border-radius: tokens.$radius-round;
 }
 
+.game-radar__axes {
+    position: absolute;
+    inset: 0;
+    transform-origin: center;
+}
+
 .game-radar__axis {
     position: absolute;
     top: 50%;
@@ -74,7 +80,7 @@
     height: 100%;
 }
 
-.game-radar__north {
+.game-radar__cardinal {
     position: absolute;
     z-index: tokens.$layer-radar-label;
     color: tokens.$color-accent;
