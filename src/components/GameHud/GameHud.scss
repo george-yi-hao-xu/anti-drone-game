@@ -1,0 +1,303 @@
+@use "../../global" as tokens;
+
+.game-hud {
+    position: absolute;
+    inset: 0;
+    z-index: tokens.$layer-hud;
+    pointer-events: none;
+    color: tokens.$color-text-primary;
+    font-variant-numeric: tabular-nums;
+    text-shadow: tokens.$text-shadow-hud;
+    // opacity: 0.5;
+}
+
+.game-hud__top-left,
+.game-hud__top-right {
+    position: absolute;
+    top: tokens.$space-xl;
+    display: flex;
+    gap: tokens.$space-sm;
+}
+
+.game-hud__top-left {
+    left: tokens.$space-xl;
+}
+
+.game-hud__top-right {
+    right: tokens.$space-xl;
+}
+
+.hud-panel,
+.hud-ammo {
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    background: tokens.$background-hud-panel;
+    box-shadow: tokens.$shadow-hud-panel;
+    backdrop-filter: blur(tokens.$blur-panel);
+}
+
+.hud-panel {
+    min-width: 126px;
+    padding: tokens.$space-md;
+    border-radius: tokens.$radius-md;
+}
+
+.hud-panel--mission {
+    min-width: 145px;
+}
+
+.hud-panel--health {
+    width: 178px;
+}
+
+.hud-panel--compact {
+    min-width: 108px;
+}
+
+.hud-label {
+    display: block;
+    color: tokens.$color-text-muted;
+    font-size: 0.64rem;
+    font-weight: tokens.$font-weight-bold;
+    letter-spacing: tokens.$tracking-label;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.hud-time {
+    display: block;
+    margin-top: tokens.$space-xs;
+    color: tokens.$color-accent;
+    font-size: 1.65rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+}
+
+.hud-panel--compact strong {
+    display: block;
+    margin-top: tokens.$space-xs;
+    color: tokens.$color-text-primary;
+    font-size: tokens.$font-size-body;
+}
+
+.hud-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hud-row strong {
+    color: tokens.$color-text-primary;
+    font-size: 0.86rem;
+}
+
+.hud-meter {
+    height: 5px;
+    margin-top: tokens.$space-sm;
+    overflow: hidden;
+    border-radius: tokens.$radius-pill;
+    background: rgba(tokens.$color-accent, 0.12);
+}
+
+.hud-meter__fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    transition:
+        width tokens.$duration-standard ease,
+        background tokens.$duration-standard ease;
+}
+
+.hud-meter__fill--ready {
+    background: tokens.$color-accent;
+}
+
+.hud-meter__fill--warning {
+    background: tokens.$color-warning;
+}
+
+.hud-meter__fill--critical {
+    background: tokens.$color-danger;
+    box-shadow: tokens.$glow-danger;
+}
+
+.game-hud__status {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    display: grid;
+    justify-items: center;
+    gap: tokens.$space-xs;
+    transform: translateX(-50%);
+}
+
+.hud-status,
+.hud-range {
+    padding: tokens.$space-xs tokens.$space-sm;
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.3);
+    border-radius: tokens.$radius-sm;
+    color: tokens.$color-accent;
+    background: tokens.$background-hud-status;
+    font-size: 0.63rem;
+    font-weight: tokens.$font-weight-bold;
+    letter-spacing: tokens.$tracking-label;
+}
+
+.hud-status--danger {
+    border-color: rgba(tokens.$color-danger, 0.45);
+    color: tokens.$color-danger;
+}
+
+.hud-range {
+    color: tokens.$color-text-primary;
+}
+
+.game-hud__reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    border: tokens.$border-width-thin solid rgba(tokens.$color-accent, 0.7);
+    border-radius: tokens.$radius-round;
+    transform: translate(-50%, -50%);
+}
+
+.game-hud__reticle::before,
+.game-hud__reticle::after,
+.game-hud__reticle span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: "";
+    background: tokens.$color-text-primary;
+    box-shadow: tokens.$glow-accent;
+    transform: translate(-50%, -50%);
+}
+
+.game-hud__reticle::before {
+    width: 1px;
+    height: 44px;
+    clip-path: polygon(0 0, 100% 0, 100% 32%, 0 32%, 0 68%, 100% 68%, 100% 100%, 0 100%);
+}
+
+.game-hud__reticle::after {
+    width: 44px;
+    height: 1px;
+    clip-path: polygon(0 0, 32% 0, 32% 100%, 68% 100%, 68% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.game-hud__reticle span {
+    width: 3px;
+    height: 3px;
+    border-radius: tokens.$radius-round;
+}
+
+.hud-ammo {
+    position: absolute;
+    right: tokens.$space-xl;
+    bottom: tokens.$space-xl;
+    width: 230px;
+    padding: tokens.$space-md 17px;
+    border-radius: 9px;
+}
+
+.hud-ammo--reloading {
+    border-color: rgba(tokens.$color-warning, 0.5);
+}
+
+.hud-ammo__count {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: tokens.$space-xs;
+}
+
+.hud-ammo__count strong {
+    color: tokens.$color-text-primary;
+    font-size: 2.7rem;
+    line-height: tokens.$line-height-tight;
+    letter-spacing: -0.04em;
+}
+
+.hud-ammo__count span {
+    color: tokens.$color-text-muted;
+    font-size: tokens.$font-size-body;
+    font-weight: tokens.$font-weight-bold;
+}
+
+.hud-ammo__magazine {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 3px;
+    margin-top: tokens.$space-sm;
+}
+
+.hud-ammo__magazine span {
+    height: 7px;
+    border-radius: 1px;
+    background: rgba(tokens.$color-accent, 0.12);
+}
+
+.hud-ammo__magazine .is-loaded {
+    background: tokens.$color-accent;
+    box-shadow: tokens.$glow-accent;
+}
+
+.hud-reload {
+    height: 3px;
+    margin-top: 9px;
+    overflow: hidden;
+    background: rgba(tokens.$color-warning, 0.14);
+}
+
+.hud-reload span {
+    display: block;
+    height: 100%;
+    background: tokens.$color-warning;
+}
+
+@media (max-width: tokens.$breakpoint-compact) {
+    .game-hud__top-left,
+    .game-hud__top-right {
+        top: tokens.$space-md;
+        gap: 6px;
+    }
+
+    .game-hud__top-left {
+        left: tokens.$space-md;
+    }
+
+    .game-hud__top-right {
+        right: tokens.$space-md;
+    }
+
+    .hud-panel {
+        min-width: 0;
+        padding: 9px tokens.$space-sm;
+    }
+
+    .hud-panel--health {
+        width: 120px;
+    }
+
+    .game-hud__status {
+        top: 82px;
+    }
+
+    .hud-ammo {
+        right: tokens.$space-md;
+        bottom: tokens.$space-md;
+        width: 190px;
+    }
+}
+
+@media (max-width: tokens.$breakpoint-hud-small) {
+    .hud-panel--health,
+    .game-hud__top-right .hud-panel:first-child {
+        display: none;
+    }
+
+    .hud-time {
+        font-size: tokens.$font-size-heading-sm;
+    }
+}

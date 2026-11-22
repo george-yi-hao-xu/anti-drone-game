@@ -1,0 +1,38 @@
+@use "./global" as tokens;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    color: tokens.$color-text-primary;
+    background: tokens.$color-background;
+    font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    font-synthesis: none;
+}
+
+html,
+body,
+#root,
+.app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+button {
+    font: inherit;
+}
+
+.app {
+    position: relative;
+    background: tokens.$background-app;
+}
+
+.app canvas {
+    display: block;
+}
