@@ -1,5 +1,7 @@
 export const MISSION = {
     duration: 60,
+    phaseStart: [1, 20, 40],
+    phaseSpan: [9, 5, 10],
     safetyRadius: 20,
     breachDamage: 25,
     magazineSize: 30,
