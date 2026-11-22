@@ -9,6 +9,7 @@
         "test": "vitest run",
         "typecheck": "tsc --noEmit --pretty false"
     },
+    "packageManager": "pnpm@10.34.2",
     "dependencies": {
         "@react-three/fiber": "^9.1.2",
         "mobx": "^7.1.7",
