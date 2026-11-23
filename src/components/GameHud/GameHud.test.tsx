@@ -33,4 +33,27 @@ describe("GameHud", () => {
         expect(screen.getByLabelText("Fire mode").textContent).toContain("AUTO");
         expect(screen.getByLabelText("Ammunition").textContent).toContain("07/ 84");
     });
+
+    it("shows the reload prompt only when the magazine is low and not reloading", () => {
+        game.start();
+        hud.setAmmo(4);
+
+        const { rerender } = render(<GameHud />);
+
+        expect(screen.getByText("press r to reload")).toBeTruthy();
+
+        hud.setAmmo(5);
+        rerender(<GameHud />);
+        expect(screen.queryByText("press r to reload")).toBeNull();
+
+        hud.setAmmo(4);
+        hud.setReloading(true);
+        rerender(<GameHud />);
+        expect(screen.queryByText("press r to reload")).toBeNull();
+
+        hud.setReloading(false);
+        hud.setAmmo(0);
+        rerender(<GameHud />);
+        expect(screen.queryByText("press r to reload")).toBeNull();
+    });
 });

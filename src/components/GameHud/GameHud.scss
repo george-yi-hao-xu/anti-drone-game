@@ -192,6 +192,23 @@
     border-radius: tokens.$radius-round;
 }
 
+.game-hud__reload-prompt {
+    position: absolute;
+    top: calc(50% + 34px);
+    left: 50%;
+    padding: tokens.$space-xs tokens.$space-sm;
+    // border: tokens.$border-width-thin solid rgba(tokens.$color-warning, 0.45);
+    border-radius: tokens.$radius-sm;
+    color: tokens.$color-warning;
+    // background: tokens.$background-hud-status;
+    font-size: 0.63rem;
+    font-weight: tokens.$font-weight-bold;
+    letter-spacing: tokens.$tracking-label;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: translateX(-50%);
+}
+
 .hud-ammo {
     position: absolute;
     right: tokens.$space-xl;
