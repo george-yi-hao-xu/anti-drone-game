@@ -11,7 +11,9 @@ export const GameLoop = () => {
             return;
         }
 
-        runtime.advance(Math.min(delta, MAX_FRAME_DELTA));
+        const frameDelta = Math.min(delta, MAX_FRAME_DELTA);
+        runtime.advance(frameDelta);
+        runtime.updateAim(frameDelta);
         hud.setElapsed(runtime.elapsed);
     });
 

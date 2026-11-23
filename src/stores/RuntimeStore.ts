@@ -66,6 +66,8 @@ export class RuntimeStore {
     yaw = 0;
     pitch = INITIAL_VIEW_PITCH;
     fireHeld = false;
+    aiming = false;
+    aimProgress = 0;
     reloadEnd = 0;
     recoil = 0;
     muzzleFlash = 0;
@@ -93,6 +95,8 @@ export class RuntimeStore {
         this.yaw = 0;
         this.pitch = INITIAL_VIEW_PITCH;
         this.fireHeld = false;
+        this.aiming = false;
+        this.aimProgress = 0;
         this.reloadEnd = 0;
         this.recoil = 0;
         this.muzzleFlash = 0;
@@ -115,6 +119,20 @@ export class RuntimeStore {
         this.fireHeld = held;
     }
 
+    setAiming(aiming: boolean) {
+        this.aiming = aiming;
+    }
+
+    updateAim(delta: number) {
+        const target = this.aiming ? 1 : 0;
+        const blend = 1 - Math.exp(-Math.max(0, delta) * 12);
+        this.aimProgress += (target - this.aimProgress) * blend;
+
+        if (Math.abs(target - this.aimProgress) < 0.001) {
+            this.aimProgress = target;
+        }
+    }
+
     registerShot() {
         this.lastShot = this.elapsed;
         this.recoil = Math.min(0.11, this.recoil + MISSION.recoilKick);
@@ -123,6 +141,7 @@ export class RuntimeStore {
 
     beginReload() {
         this.fireHeld = false;
+        this.aiming = false;
         this.reloadEnd = this.elapsed + MISSION.reloadSeconds;
     }
 

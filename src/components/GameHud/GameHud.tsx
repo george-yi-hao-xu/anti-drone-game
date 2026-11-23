@@ -6,6 +6,8 @@ import { runtime } from "../../stores/RuntimeStore";
 import { GameRadar } from "../GameRadar/GameRadar";
 import "./GameHud.scss";
 
+const LOW_AMMO_THRESHOLD = 5;
+
 const formatTime = (seconds: number) => {
     const remaining = Math.max(0, Math.ceil(MISSION.duration - seconds));
     const minutes = Math.floor(remaining / 60);
@@ -74,9 +76,12 @@ export const GameHud = observer(() => {
                 )}
             </div>
 
-            <div className="game-hud__reticle" aria-hidden="true">
-                <span />
-            </div>
+            {/* 屏幕中央的准星  */}
+            <div className={`game-hud__reticle ${runtime.aiming ? 'is-aiming' : ''}`} aria-hidden="true" />
+
+            {hud.ammo > 0 && hud.ammo < LOW_AMMO_THRESHOLD && !hud.reloading && (
+                <div className="game-hud__reload-prompt">Press R to reload</div>
+            )}
 
             <GameRadar />
 

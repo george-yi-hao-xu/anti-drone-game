@@ -1,24 +1,33 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { getWeaponViewPosition, MISSION, WEAPON_MODEL_SCALE } from "../../constants";
 import { game } from "../../stores/GameStore";
+import { hud } from "../../stores/HudStore";
 import { runtime } from "../../stores/RuntimeStore";
-
-const BASE_POSITION = new THREE.Vector3(0.45, -0.38, -0.85);
+import { getReloadHandTravel } from "./reloadAnimation";
 
 const MetalMaterial = ({ color = "#243541" }: { color?: string }) => (
-    <meshStandardMaterial color={color} roughness={0.48} metalness={0.55} />
+    <meshStandardMaterial color={color} roughness={0.42} metalness={0.68} />
+);
+
+const PolymerMaterial = ({ color = "#223330" }: { color?: string }) => (
+    <meshStandardMaterial color={color} roughness={0.82} metalness={0.08} />
 );
 
 const GloveMaterial = () => (
-    <meshStandardMaterial color="#273a34" roughness={0.92} />
+    <meshStandardMaterial color="#2f4940" roughness={0.94} />
+);
+
+const IronSightMaterial = () => (
+    <meshStandardMaterial color="#111b1e" roughness={0.38} metalness={0.72} />
 );
 
 export const WeaponModel = () => {
     const camera = useThree((state) => state.camera);
     const weapon = useRef<THREE.Group>(null);
+    const leftArm = useRef<THREE.Group>(null);
     const localPosition = useMemo(() => new THREE.Vector3(), []);
-    const localRotation = useMemo(() => new THREE.Quaternion(), []);
 
     useFrame(() => {
         if (!weapon.current) {
@@ -26,95 +35,136 @@ export const WeaponModel = () => {
         }
 
         weapon.current.visible = game.phase === "playing" || game.phase === "paused";
-        const bob = Math.sin(runtime.elapsed * 1.8) * 0.006;
+        const viewPosition = getWeaponViewPosition(runtime.aimProgress);
         localPosition.set(
-            BASE_POSITION.x + bob,
-            BASE_POSITION.y + Math.abs(bob) * 0.5,
-            BASE_POSITION.z + runtime.recoil * 2.3,
+            viewPosition[0],
+            viewPosition[1],
+            viewPosition[2] + runtime.recoil * 2.1,
         );
         weapon.current.position
             .copy(localPosition)
             .applyQuaternion(camera.quaternion)
             .add(camera.position);
-        localRotation.setFromEuler(
-            new THREE.Euler(
-                -0.025 + runtime.recoil * 0.7,
-                -0.035,
-                -0.025 + bob * 0.8,
-                "YXZ",
-            ),
-        );
-        weapon.current.quaternion.copy(camera.quaternion).multiply(localRotation);
+        weapon.current.quaternion.copy(camera.quaternion);
+
+        if (leftArm.current) {
+            const handDropProgress = getReloadHandTravel(
+                runtime.elapsed,
+                runtime.reloadEnd,
+                MISSION.reloadSeconds,
+                hud.reloading,
+            );
+            leftArm.current.position.set(
+                -0.04 * handDropProgress,
+                -0.78 * handDropProgress,
+                0.16 * handDropProgress,
+            );
+        }
     });
 
     return (
         <group ref={weapon}>
-            <group scale={0.9}>
-                <mesh castShadow position={[0, 0, 0]}>
-                    <boxGeometry args={[0.28, 0.22, 0.72]} />
+            <group scale={WEAPON_MODEL_SCALE}>
+                {/* Receiver and compact buffer tube */}
+                <mesh castShadow position={[0, -0.055, 0.42]} rotation={[Math.PI / 2, 0, 0]}>
+                    <cylinderGeometry args={[0.055, 0.065, 0.4, 12]} />
+                    <PolymerMaterial color="#263b38" />
+                </mesh>
+                <mesh castShadow position={[0, -0.08, 0.05]}>
+                    <boxGeometry args={[0.32, 0.24, 0.72]} />
                     <MetalMaterial />
                 </mesh>
-
-                <mesh castShadow position={[0, 0.02, -0.64]} rotation={[Math.PI / 2, 0, 0]}>
-                    <cylinderGeometry args={[0.038, 0.048, 0.7, 12]} />
-                    <MetalMaterial color="#15232c" />
+                <mesh castShadow position={[0, 0.055, -0.08]}>
+                    <boxGeometry args={[0.27, 0.07, 0.54]} />
+                    <MetalMaterial color="#17262c" />
                 </mesh>
-                <mesh castShadow position={[0, 0.02, -1]} rotation={[Math.PI / 2, 0, 0]}>
-                    <cylinderGeometry args={[0.072, 0.055, 0.16, 10]} />
-                    <MetalMaterial color="#101c23" />
-                </mesh>
-
-                <mesh castShadow position={[0, -0.015, 0.48]}>
-                    <boxGeometry args={[0.22, 0.18, 0.52]} />
-                    <meshStandardMaterial color="#354a45" roughness={0.8} metalness={0.12} />
-                </mesh>
-                <mesh castShadow position={[0, -0.24, 0.2]} rotation={[-0.2, 0, 0]}>
-                    <boxGeometry args={[0.13, 0.36, 0.17]} />
-                    <meshStandardMaterial color="#1d2b2c" roughness={0.9} />
-                </mesh>
-                <mesh castShadow position={[0, -0.3, -0.08]} rotation={[0.13, 0, 0]}>
-                    <boxGeometry args={[0.16, 0.42, 0.24]} />
-                    <meshStandardMaterial color="#263b3d" roughness={0.82} metalness={0.15} />
+                <mesh castShadow position={[-0.166, -0.06, 0.02]}>
+                    <boxGeometry args={[0.018, 0.14, 0.42]} />
+                    <MetalMaterial color="#42524d" />
                 </mesh>
 
-                <mesh castShadow position={[0, 0.18, -0.12]}>
-                    <boxGeometry args={[0.09, 0.1, 0.34]} />
-                    <MetalMaterial color="#172a32" />
+                {/* Handguard, barrel, and muzzle device */}
+                <mesh castShadow position={[0, -0.035, -0.58]}>
+                    <boxGeometry args={[0.27, 0.19, 0.58]} />
+                    <PolymerMaterial color="#2b403b" />
                 </mesh>
-                <mesh position={[0, 0.245, -0.23]}>
-                    <boxGeometry args={[0.035, 0.035, 0.055]} />
-                    <meshStandardMaterial
-                        color="#60e6ff"
-                        emissive="#21b9d6"
-                        emissiveIntensity={2.2}
-                    />
+                {[-0.77, -0.61, -0.45].map((z) => (
+                    <mesh key={z} castShadow position={[0, -0.137, z]}>
+                        <boxGeometry args={[0.3, 0.025, 0.06]} />
+                        <MetalMaterial color="#18282a" />
+                    </mesh>
+                ))}
+                <mesh castShadow position={[0, 0.02, -1.08]} rotation={[Math.PI / 2, 0, 0]}>
+                    <cylinderGeometry args={[0.034, 0.04, 0.72, 16]} />
+                    <MetalMaterial color="#142126" />
+                </mesh>
+                <mesh castShadow position={[0, 0.02, -1.43]} rotation={[Math.PI / 2, 0, 0]}>
+                    <cylinderGeometry args={[0.065, 0.05, 0.14, 12]} />
+                    <MetalMaterial color="#0e181c" />
                 </mesh>
 
-                <mesh castShadow position={[0.02, -0.39, 0.23]} scale={[1, 1.15, 1]}>
-                    <sphereGeometry args={[0.14, 12, 8]} />
+                {/* Magazine and pistol grip */}
+                <mesh castShadow position={[0, -0.34, -0.03]} rotation={[0.1, 0, 0]}>
+                    <boxGeometry args={[0.18, 0.4, 0.24]} />
+                    <PolymerMaterial color="#1d2d2c" />
+                </mesh>
+                <mesh castShadow position={[0, -0.31, 0.27]} rotation={[-0.22, 0, 0]}>
+                    <boxGeometry args={[0.14, 0.35, 0.17]} />
+                    <PolymerMaterial color="#172625" />
+                </mesh>
+
+                {/* Rear sight ears and front post align on the camera-center ray. */}
+                <mesh castShadow position={[0, 0.13, 0.25]}>
+                    <boxGeometry args={[0.18, 0.06, 0.08]} />
+                    <IronSightMaterial />
+                </mesh>
+                {[-0.065, 0.065].map((x) => (
+                    <mesh key={x} castShadow position={[x, 0.185, 0.25]}>
+                        <boxGeometry args={[0.035, 0.11, 0.065]} />
+                        <IronSightMaterial />
+                    </mesh>
+                ))}
+                {/* 准星底座 */}
+                {/* <mesh castShadow position={[0, 0.105, -1.05]}>
+                    <boxGeometry args={[0.15, 0.05, 0.07]} />
+                    <IronSightMaterial />
+                </mesh> */}
+                {/* 竖的准星 */}
+                <mesh castShadow position={[0, 0.08, -1.05]}>
+                    <boxGeometry args={[0.026, 0.32, 0.026]} />
+                    <IronSightMaterial />
+                </mesh>
+
+                {/* Right firing hand and forearm */}
+                <mesh castShadow position={[0.13, -0.36, 0.22]} scale={[0.9, 1.08, 0.86]}>
+                    <sphereGeometry args={[0.12, 16, 10]} />
                     <GloveMaterial />
                 </mesh>
-                <mesh
-                    castShadow
-                    position={[0.2, -0.7, 0.48]}
-                    rotation={[0.45, 0, 0.28]}
-                >
-                    <cylinderGeometry args={[0.13, 0.17, 0.72, 10]} />
-                    <meshStandardMaterial color="#304a43" roughness={0.95} />
+                <mesh castShadow position={[0.24, -0.65, 0.43]} rotation={[0.48, 0, 0.28]}>
+                    <capsuleGeometry args={[0.11, 0.5, 6, 12]} />
+                    <meshStandardMaterial color="#344e45" roughness={0.95} />
                 </mesh>
 
-                <mesh castShadow position={[-0.02, -0.17, -0.42]} scale={[1.15, 0.9, 1]}>
-                    <sphereGeometry args={[0.14, 12, 8]} />
-                    <GloveMaterial />
-                </mesh>
-                <mesh
-                    castShadow
-                    position={[-0.29, -0.58, -0.18]}
-                    rotation={[0.72, 0, -0.5]}
-                >
-                    <cylinderGeometry args={[0.13, 0.18, 0.82, 10]} />
-                    <meshStandardMaterial color="#304a43" roughness={0.95} />
-                </mesh>
+                {/* Left support hand and forearm; this group owns reload motion. */}
+                <group ref={leftArm}>
+                    {/* hand as a ball */}
+                    {/* <mesh castShadow position={[-0.13, -0.19, -0.57]} scale={[1.04, 0.78, 0.94]}>
+                        <sphereGeometry args={[0.115, 16, 10]} />
+                        <GloveMaterial />
+                    </mesh> */}
+                    {/* fingers */}
+                    {/* {[-0.19, -0.15, -0.11, -0.07].map((x) => (
+                        <mesh key={x} castShadow position={[x, -0.11, -0.59]}>
+                            <capsuleGeometry args={[0.018, 0.1, 4, 8]} />
+                            <GloveMaterial />
+                        </mesh>
+                    ))} */}
+                    {/* left arm */}
+                    <mesh castShadow position={[-0.23, -0.52, -0.33]} rotation={[0.66, 0, -0.42]}>
+                        <capsuleGeometry args={[0.11, 0.54, 6, 12]} />
+                        <meshStandardMaterial color="#344e45" roughness={0.95} />
+                    </mesh>
+                </group>
             </group>
         </group>
     );

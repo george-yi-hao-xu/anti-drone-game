@@ -1,7 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import * as THREE from "three";
-import { MISSION, PLAYER_POSITION, WEAPON_MUZZLE_POSITION } from "../../constants";
+import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "../../constants";
 import { game } from "../../stores/GameStore";
 import { hud } from "../../stores/HudStore";
 import { runtime } from "../../stores/RuntimeStore";
@@ -49,7 +49,7 @@ function fire(camera: THREE.Camera) {
     const end = hit
         ? hit.drone.position.clone()
         : origin.clone().addScaledVector(direction, MAX_TRACER_DISTANCE);
-    const tracerStart = new THREE.Vector3(...WEAPON_MUZZLE_POSITION)
+    const tracerStart = new THREE.Vector3(...getWeaponMuzzlePosition(runtime.aimProgress))
         .applyQuaternion(camera.quaternion)
         .add(camera.position);
 
@@ -85,10 +85,20 @@ export const WeaponSystem = () => {
     useEffect(() => {
         const handleMouseDown = (event: MouseEvent) => {
             if (
-                event.button !== 0 ||
                 document.pointerLockElement !== canvas ||
                 game.phase !== "playing"
             ) {
+                return;
+            }
+
+            if (event.button === 2) {
+                if (!hud.reloading) {
+                    runtime.setAiming(true);
+                }
+                return;
+            }
+
+            if (event.button !== 0) {
                 return;
             }
 
@@ -98,7 +108,21 @@ export const WeaponSystem = () => {
             fire(camera);
         };
 
-        const stopFiring = () => runtime.setFireHeld(false);
+        const handleMouseUp = (event: MouseEvent) => {
+            if (event.button === 0) {
+                runtime.setFireHeld(false);
+            }
+            if (event.button === 2) {
+                runtime.setAiming(false);
+            }
+        };
+
+        const stopInteractions = () => {
+            runtime.setFireHeld(false);
+            runtime.setAiming(false);
+        };
+
+        const preventContextMenu = (event: MouseEvent) => event.preventDefault();
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (game.phase !== "playing") {
@@ -117,17 +141,19 @@ export const WeaponSystem = () => {
         };
 
         document.addEventListener("mousedown", handleMouseDown);
-        document.addEventListener("mouseup", stopFiring);
-        document.addEventListener("pointerlockchange", stopFiring);
+        document.addEventListener("mouseup", handleMouseUp);
+        document.addEventListener("pointerlockchange", stopInteractions);
         document.addEventListener("keydown", handleKeyDown);
-        window.addEventListener("blur", stopFiring);
+        canvas.addEventListener("contextmenu", preventContextMenu);
+        window.addEventListener("blur", stopInteractions);
 
         return () => {
             document.removeEventListener("mousedown", handleMouseDown);
-            document.removeEventListener("mouseup", stopFiring);
-            document.removeEventListener("pointerlockchange", stopFiring);
+            document.removeEventListener("mouseup", handleMouseUp);
+            document.removeEventListener("pointerlockchange", stopInteractions);
             document.removeEventListener("keydown", handleKeyDown);
-            window.removeEventListener("blur", stopFiring);
+            canvas.removeEventListener("contextmenu", preventContextMenu);
+            window.removeEventListener("blur", stopInteractions);
         };
     }, [camera, canvas]);
 

@@ -18,4 +18,13 @@ export const MISSION = {
 
 export const PLAYER_POSITION = [0, 3.2, 0] as const;
 export const INITIAL_VIEW_PITCH = -0.09;
-export const WEAPON_MUZZLE_POSITION = [0.45, -0.34, -1.82] as const;
+
+export {
+    getWeaponMuzzlePosition,
+    getWeaponViewPosition,
+    WEAPON_HIP_POSITION,
+    WEAPON_MODEL_SCALE,
+    WEAPON_MUZZLE_POSITION,
+    WEAPON_SIGHT_TIP_POSITION,
+    WEAPON_VIEW_POSITION,
+} from "./weapon";

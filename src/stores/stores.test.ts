@@ -122,4 +122,20 @@ describe("HUD state", () => {
         hud.toggleFireMode();
         expect(hud.fireMode).toBe("AUTO");
     });
+
+    it("smoothly enters and leaves aim mode", () => {
+        const { runtime } = createStores();
+
+        runtime.setAiming(true);
+        runtime.updateAim(0.05);
+        expect(runtime.aimProgress).toBeGreaterThan(0);
+        expect(runtime.aimProgress).toBeLessThan(1);
+
+        runtime.updateAim(1);
+        expect(runtime.aimProgress).toBeCloseTo(1, 3);
+
+        runtime.setAiming(false);
+        runtime.updateAim(1);
+        expect(runtime.aimProgress).toBeCloseTo(0, 3);
+    });
 });
