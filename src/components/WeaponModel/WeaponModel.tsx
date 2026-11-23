@@ -1,8 +1,11 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { MISSION } from "../../constants";
 import { game } from "../../stores/GameStore";
+import { hud } from "../../stores/HudStore";
 import { runtime } from "../../stores/RuntimeStore";
+import { getReloadHandTravel } from "./reloadAnimation";
 
 const BASE_POSITION = new THREE.Vector3(0.45, -0.38, -0.85);
 
@@ -17,6 +20,7 @@ const GloveMaterial = () => (
 export const WeaponModel = () => {
     const camera = useThree((state) => state.camera);
     const weapon = useRef<THREE.Group>(null);
+    const leftArm = useRef<THREE.Group>(null);
     const localPosition = useMemo(() => new THREE.Vector3(), []);
     const localRotation = useMemo(() => new THREE.Quaternion(), []);
 
@@ -45,6 +49,20 @@ export const WeaponModel = () => {
             ),
         );
         weapon.current.quaternion.copy(camera.quaternion).multiply(localRotation);
+
+        if (leftArm.current) {
+            const reloadTravel = getReloadHandTravel(
+                runtime.elapsed,
+                runtime.reloadEnd,
+                MISSION.reloadSeconds,
+                hud.reloading,
+            );
+            leftArm.current.position.set(
+                -0.04 * reloadTravel,
+                -0.72 * reloadTravel,
+                0.14 * reloadTravel,
+            );
+        }
     });
 
     return (
@@ -103,18 +121,24 @@ export const WeaponModel = () => {
                     <meshStandardMaterial color="#304a43" roughness={0.95} />
                 </mesh>
 
-                <mesh castShadow position={[-0.02, -0.17, -0.42]} scale={[1.15, 0.9, 1]}>
-                    <sphereGeometry args={[0.14, 12, 8]} />
-                    <GloveMaterial />
-                </mesh>
-                <mesh
-                    castShadow
-                    position={[-0.29, -0.58, -0.18]}
-                    rotation={[0.72, 0, -0.5]}
-                >
-                    <cylinderGeometry args={[0.13, 0.18, 0.82, 10]} />
-                    <meshStandardMaterial color="#304a43" roughness={0.95} />
-                </mesh>
+                <group ref={leftArm}>
+                    <mesh
+                        castShadow
+                        position={[-0.02, -0.17, -0.42]}
+                        scale={[1.15, 0.9, 1]}
+                    >
+                        <sphereGeometry args={[0.14, 12, 8]} />
+                        <GloveMaterial />
+                    </mesh>
+                    <mesh
+                        castShadow
+                        position={[-0.29, -0.58, -0.18]}
+                        rotation={[0.72, 0, -0.5]}
+                    >
+                        <cylinderGeometry args={[0.13, 0.18, 0.82, 10]} />
+                        <meshStandardMaterial color="#304a43" roughness={0.95} />
+                    </mesh>
+                </group>
             </group>
         </group>
     );
