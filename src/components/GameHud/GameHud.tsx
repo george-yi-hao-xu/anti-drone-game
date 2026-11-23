@@ -76,9 +76,7 @@ export const GameHud = observer(() => {
                 )}
             </div>
 
-            <div className="game-hud__reticle" aria-hidden="true">
-                <span />
-            </div>
+            <div className="game-hud__reticle" aria-hidden="true" />
 
             {hud.ammo > 0 && hud.ammo < LOW_AMMO_THRESHOLD && !hud.reloading && (
                 <div className="game-hud__reload-prompt">Press R to reload</div>
