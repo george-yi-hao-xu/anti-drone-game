@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { MISSION } from "~/constants";
 import { game } from "~/stores/GameStore";
 import { requestGamePointerLock } from "~/systems/PlayerControls/pointerLock";
+import { Mouse, MousePointer } from 'lucide-react';
 import "./GameOverlay.scss";
 
 const startMission = () => {
@@ -25,19 +26,19 @@ const Briefing = () => (
         <dl className="controls" aria-label="Controls">
             <div>
                 <dt>View</dt>
-                <dd>Mouse</dd>
+                <dd><Mouse /></dd>
             </div>
             <div>
                 <dt>Fire</dt>
-                <dd>Left Mouse Click</dd>
+                <dd><MousePointer /></dd>
             </div>
             <div>
                 <dt>Reload</dt>
-                <dd>Press R</dd>
+                <dd>R</dd>
             </div>
             <div>
-                <dt>Switch Fire mode</dt>
-                <dd>Press B</dd>
+                <dt>Fire mode</dt>
+                <dd>B</dd>
             </div>
         </dl>
 
