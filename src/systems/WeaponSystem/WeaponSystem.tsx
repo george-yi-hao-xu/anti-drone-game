@@ -5,7 +5,7 @@ import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "~/constants";
 import { game } from "~/stores/GameStore";
 import { hud } from "~/stores/HudStore";
 import { runtime } from "~/stores/RuntimeStore";
-import { findHitDrone } from "./weaponLogic";
+import { findHitDrone, getShotDirection } from "./weaponLogic";
 import { playGunfireSound } from "./gunfireAudio";
 import { playReloadSound } from "./reloadAudio";
 
@@ -47,7 +47,7 @@ function fire(camera: THREE.Camera) {
     }
 
     const origin = camera.position.clone();
-    const direction = camera.getWorldDirection(new THREE.Vector3()).normalize();
+    const direction = getShotDirection(camera.quaternion, runtime.aiming);
     const hit = findHitDrone(origin, direction, runtime.drones);
     const end = hit
         ? hit.drone.position.clone()

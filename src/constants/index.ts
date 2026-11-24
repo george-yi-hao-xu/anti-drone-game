@@ -14,6 +14,8 @@ export const MISSION = {
     tracerSeconds: 0.07,
     burstSeconds: 0.38,
     recoilKick: 0.028,
+    hipSpreadDegrees: 0.90,
+    aimedSpreadDegrees: 0.25,
 };
 
 export const PLAYER_POSITION = [0, 3.2, 0] as const;

@@ -7,6 +7,33 @@ export interface DroneHit {
     distance: number;
 }
 
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
+export function getShotSpreadRadians(isAiming: boolean) {
+    const spreadDegrees = isAiming
+        ? MISSION.aimedSpreadDegrees
+        : MISSION.hipSpreadDegrees;
+    return THREE.MathUtils.degToRad(spreadDegrees);
+}
+
+export function getShotDirection(
+    cameraQuaternion: THREE.Quaternion,
+    isAiming: boolean,
+    random: () => number = Math.random,
+) {
+    const spread = getShotSpreadRadians(isAiming);
+    const radius = Math.sqrt(clamp01(random())) * Math.tan(spread);
+    const angle = clamp01(random()) * Math.PI * 2;
+
+    return new THREE.Vector3(
+        Math.cos(angle) * radius,
+        Math.sin(angle) * radius,
+        -1,
+    )
+        .normalize()
+        .applyQuaternion(cameraQuaternion);
+}
+
 export function findHitDrone(
     origin: THREE.Vector3,
     direction: THREE.Vector3,
