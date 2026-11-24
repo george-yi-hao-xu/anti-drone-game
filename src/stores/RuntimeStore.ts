@@ -1,9 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import * as THREE from "three";
-import { INITIAL_VIEW_PITCH, MISSION } from "../constants";
-import type { Drone, DroneProfile } from "../types/Drone";
-import type { Burst } from "../types/Burst";
-import type { Tracer } from "../types/Tracer";
+import { INITIAL_VIEW_PITCH, MISSION } from "~/constants";
+import type { Drone, DroneProfile } from "~/types/Drone";
+import type { Burst } from "~/types/Burst";
+import type { Tracer } from "~/types/Tracer";
 
 const PHASE_HALF_ARCS = [30, 45, 60] as const;
 const DRONE_SPAWN_MIN_RADIUS = 170;

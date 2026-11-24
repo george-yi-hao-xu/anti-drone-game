@@ -1,10 +1,10 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { getWeaponViewPosition, MISSION, WEAPON_MODEL_SCALE } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { getWeaponViewPosition, MISSION, WEAPON_MODEL_SCALE } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { getReloadHandTravel } from "./reloadAnimation";
 
 const MetalMaterial = ({ color = "#243541" }: { color?: string }) => (

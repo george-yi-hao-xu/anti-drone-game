@@ -1,11 +1,12 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import * as THREE from "three";
-import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { findHitDrone } from "./weaponLogic";
+import { playGunfireSound } from "./gunfireAudio";
 
 const MAX_TRACER_DISTANCE = 180;
 
@@ -54,6 +55,7 @@ function fire(camera: THREE.Camera) {
         .add(camera.position);
 
     runtime.registerShot();
+    playGunfireSound();
     runtime.addTracer(tracerStart, end);
 
     if (hit) {

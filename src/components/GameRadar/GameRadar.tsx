@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
-import { PLAYER_POSITION } from "../../constants";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { PLAYER_POSITION } from "~/constants";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { projectToRadar } from "./radarMath";
 import "./GameRadar.scss";
 

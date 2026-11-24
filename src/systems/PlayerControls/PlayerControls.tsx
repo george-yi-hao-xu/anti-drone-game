@@ -1,8 +1,8 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
-import { PLAYER_POSITION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { PLAYER_POSITION } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { applyPointerMovement } from "./aimMath";
 
 export const PlayerControls = () => {

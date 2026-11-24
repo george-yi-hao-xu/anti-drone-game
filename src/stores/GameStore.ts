@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from "mobx";
-import type { GamePhase, ResultState } from "../types";
+import type { GamePhase, ResultState } from "~/types";
 import { hud, type HudStore } from "./HudStore";
 import { runtime, type RuntimeStore } from "./RuntimeStore";
 

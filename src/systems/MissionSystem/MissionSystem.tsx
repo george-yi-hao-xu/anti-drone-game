@@ -1,9 +1,9 @@
 import { useFrame } from "@react-three/fiber";
-import { MISSION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
-import { exitGamePointerLock } from "../PlayerControls/pointerLock";
+import { MISSION } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
+import { exitGamePointerLock } from "~/systems/PlayerControls/pointerLock";
 import { getBreachedDrones, getMissionOutcome } from "./missionLogic";
 
 function finishMission(won: boolean) {

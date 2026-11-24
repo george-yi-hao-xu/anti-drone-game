@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { INITIAL_VIEW_PITCH, PLAYER_POSITION } from "../../constants";
-import { World } from "../World/World";
+import { INITIAL_VIEW_PITCH, PLAYER_POSITION } from "~/constants";
+import { World } from "~/components/World/World";
 
 export const GameCanvas = () => {
     return (

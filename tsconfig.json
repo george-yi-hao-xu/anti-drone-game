@@ -4,6 +4,10 @@
         "lib": ["ES2020", "dom"],
         "module": "ESNext",
         "moduleResolution": "Bundler",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["src/*"]
+        },
         "jsx": "react-jsx",
         "noEmit": true,
         "strict": true,

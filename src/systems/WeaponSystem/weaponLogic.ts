@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { MISSION } from "../../constants";
-import type { Drone } from "../../types/Drone";
+import { MISSION } from "~/constants";
+import type { Drone } from "~/types/Drone";
 
 export interface DroneHit {
     drone: Drone;

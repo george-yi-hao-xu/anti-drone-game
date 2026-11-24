@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
-import { createDrones } from "../../stores/RuntimeStore";
+import { createDrones } from "~/stores/RuntimeStore";
 import { findHitDrone } from "./weaponLogic";
 
 function activeDroneAt(id: number, position: THREE.Vector3) {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
-import { MISSION } from "../../constants";
+import { MISSION } from "~/constants";
 import {
     BEARING_PANELS,
     CARDINAL_PANELS,

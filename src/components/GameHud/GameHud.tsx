@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { MISSION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
-import { GameRadar } from "../GameRadar/GameRadar";
+import { MISSION } from "~/constants";
+import { GameRadar } from "~/components/GameRadar/GameRadar";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import "./GameHud.scss";
 
 const LOW_AMMO_THRESHOLD = 5;

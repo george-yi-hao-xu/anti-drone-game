@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { PLAYER_POSITION } from "../../constants";
-import type { Drone } from "../../types/Drone";
+import { PLAYER_POSITION } from "~/constants";
+import type { Drone } from "~/types/Drone";
 
 export const DRONE_TARGET = new THREE.Vector3(...PLAYER_POSITION);
 

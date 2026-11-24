@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MISSION } from "../constants";
+import { MISSION } from "~/constants";
 import { GameStore } from "./GameStore";
 import { HudStore } from "./HudStore";
 import { RuntimeStore } from "./RuntimeStore";

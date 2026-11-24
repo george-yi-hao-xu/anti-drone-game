@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 
 const MAX_FRAME_DELTA = 0.05;
 
