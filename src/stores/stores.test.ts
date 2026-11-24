@@ -156,5 +156,10 @@ describe("HUD state", () => {
         runtime.pitch = 1.04;
         runtime.registerShot();
         expect(runtime.pitch).toBe(1.05);
+
+        for (let shot = 0; shot < 10; shot += 1) {
+            runtime.registerShot();
+        }
+        expect(runtime.recoil).toBe(MISSION.maxRecoil);
     });
 });

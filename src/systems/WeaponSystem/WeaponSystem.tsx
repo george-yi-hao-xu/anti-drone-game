@@ -47,7 +47,7 @@ function fire(camera: THREE.Camera) {
     }
 
     const origin = camera.position.clone();
-    const direction = getShotDirection(camera.quaternion, runtime.aiming);
+    const direction = getShotDirection(camera.quaternion, runtime.aiming, runtime.recoil);
     const hit = findHitDrone(origin, direction, runtime.drones);
     const end = hit
         ? hit.drone.position.clone()

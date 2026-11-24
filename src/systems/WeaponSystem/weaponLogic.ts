@@ -9,19 +9,25 @@ export interface DroneHit {
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
-export function getShotSpreadRadians(isAiming: boolean) {
-    const spreadDegrees = isAiming
+export function getShotSpreadRadians(isAiming: boolean, recoil: number) {
+    const baseSpreadDegrees = isAiming
         ? MISSION.aimedSpreadDegrees
         : MISSION.hipSpreadDegrees;
+    const spreadDegrees = THREE.MathUtils.lerp(
+        baseSpreadDegrees,
+        MISSION.maxBurstSpreadDegrees,
+        clamp01(recoil / MISSION.maxRecoil),
+    );
     return THREE.MathUtils.degToRad(spreadDegrees);
 }
 
 export function getShotDirection(
     cameraQuaternion: THREE.Quaternion,
     isAiming: boolean,
+    recoil: number,
     random: () => number = Math.random,
 ) {
-    const spread = getShotSpreadRadians(isAiming);
+    const spread = getShotSpreadRadians(isAiming, recoil);
     const radius = Math.sqrt(clamp01(random())) * Math.tan(spread);
     const angle = clamp01(random()) * Math.PI * 2;
 

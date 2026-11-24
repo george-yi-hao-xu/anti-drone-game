@@ -34,7 +34,7 @@ export const GameHud = observer(() => {
             ),
         )
         : 0;
-    const recoilBloom = Math.min(1, runtime.recoil / 0.11) * 8;
+    const recoilBloom = Math.min(1, runtime.recoil / MISSION.maxRecoil) * 8;
     const reticleHalfGap = 3 + (1 - runtime.aimProgress) * 13 + recoilBloom;
     const reticleOpacity = Math.max(0, 1 - runtime.aimProgress);
 
