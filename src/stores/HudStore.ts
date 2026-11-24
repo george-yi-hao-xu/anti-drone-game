@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { MISSION } from "../constants";
-import type { FireMode, HudState } from "../types";
+import { MISSION } from "~/constants";
+import type { FireMode, HudState } from "~/types";
 
 const INITIAL_HUD: HudState = {
     health: 100,

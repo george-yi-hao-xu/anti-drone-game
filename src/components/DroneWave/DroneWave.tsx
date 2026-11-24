@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
-import { game } from "../../stores/GameStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { game } from "~/stores/GameStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { DroneModel } from "./DroneModel";
 import { getDronePosition } from "./droneMotion";
 

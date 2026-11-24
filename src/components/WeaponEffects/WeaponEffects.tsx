@@ -2,11 +2,11 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { getWeaponMuzzlePosition, MISSION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { runtime } from "../../stores/RuntimeStore";
-import type { Burst } from "../../types/Burst";
-import type { Tracer } from "../../types/Tracer";
+import { getWeaponMuzzlePosition, MISSION } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { runtime } from "~/stores/RuntimeStore";
+import type { Burst } from "~/types/Burst";
+import type { Tracer } from "~/types/Tracer";
 
 const TracerEffect = ({ tracer }: { tracer: Tracer }) => {
     const transform = useMemo(() => {

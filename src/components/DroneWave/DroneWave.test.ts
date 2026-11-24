@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as THREE from "three";
-import { createDrones } from "../../stores/RuntimeStore";
+import { createDrones } from "~/stores/RuntimeStore";
 import { DRONE_TARGET, getDronePosition } from "./droneMotion";
 
 describe("drone flight profiles", () => {

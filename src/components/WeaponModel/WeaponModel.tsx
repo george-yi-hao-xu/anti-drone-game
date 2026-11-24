@@ -1,10 +1,10 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import { getWeaponViewPosition, MISSION, WEAPON_MODEL_SCALE } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
+import { getWeaponViewPosition, MISSION, WEAPON_MODEL_SCALE } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import { getReloadHandTravel } from "./reloadAnimation";
 
 const MetalMaterial = ({ color = "#243541" }: { color?: string }) => (
@@ -36,10 +36,12 @@ export const WeaponModel = () => {
 
         weapon.current.visible = game.phase === "playing" || game.phase === "paused";
         const viewPosition = getWeaponViewPosition(runtime.aimProgress);
+
+        // recoil to weapon
         localPosition.set(
-            viewPosition[0],
-            viewPosition[1],
-            viewPosition[2] + runtime.recoil * 2.1,
+            viewPosition[0] + runtime.recoil * 0.2, // hori
+            viewPosition[1] + runtime.recoil * (-0.8),
+            viewPosition[2] + runtime.recoil * 0.5,
         );
         weapon.current.position
             .copy(localPosition)

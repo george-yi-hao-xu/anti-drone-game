@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
-import { createDrones } from "../../stores/RuntimeStore";
-import { findHitDrone } from "./weaponLogic";
+import { MISSION } from "~/constants";
+import { createDrones } from "~/stores/RuntimeStore";
+import { findHitDrone, getShotDirection, getShotSpreadRadians } from "./weaponLogic";
 
 function activeDroneAt(id: number, position: THREE.Vector3) {
     const drone = createDrones()[id];
@@ -38,5 +39,69 @@ describe("hitscan targeting", () => {
         const behind = activeDroneAt(2, new THREE.Vector3(0, 3.2, 10));
 
         expect(findHitDrone(origin, forward, [destroyed, inactive, behind])).toBeNull();
+    });
+});
+
+describe("weapon spread", () => {
+    const forward = new THREE.Vector3(0, 0, -1);
+    const identity = new THREE.Quaternion();
+
+    it("uses separate hip-fire and aimed spread", () => {
+        expect(THREE.MathUtils.radToDeg(getShotSpreadRadians(false, 0))).toBeCloseTo(
+            MISSION.hipSpreadDegrees,
+        );
+        expect(THREE.MathUtils.radToDeg(getShotSpreadRadians(true, 0))).toBeCloseTo(
+            MISSION.aimedSpreadDegrees,
+        );
+    });
+
+    it("increases both modes toward maximum spread during sustained fire", () => {
+        const halfRecoil = MISSION.maxRecoil / 2;
+        const hipHalfSpread = THREE.MathUtils.lerp(
+            MISSION.hipSpreadDegrees,
+            MISSION.maxBurstSpreadDegrees,
+            0.5,
+        );
+
+        expect(
+            THREE.MathUtils.radToDeg(getShotSpreadRadians(false, halfRecoil)),
+        ).toBeCloseTo(hipHalfSpread);
+        expect(
+            THREE.MathUtils.radToDeg(getShotSpreadRadians(false, MISSION.maxRecoil)),
+        ).toBeCloseTo(MISSION.maxBurstSpreadDegrees);
+        expect(
+            THREE.MathUtils.radToDeg(getShotSpreadRadians(true, MISSION.maxRecoil)),
+        ).toBeCloseTo(MISSION.maxBurstSpreadDegrees);
+    });
+
+    it("clamps recoil outside its valid range", () => {
+        expect(THREE.MathUtils.radToDeg(getShotSpreadRadians(false, -1))).toBeCloseTo(
+            MISSION.hipSpreadDegrees,
+        );
+        expect(THREE.MathUtils.radToDeg(getShotSpreadRadians(true, 10))).toBeCloseTo(
+            MISSION.maxBurstSpreadDegrees,
+        );
+    });
+
+    it("returns a normalized direction inside the active cone", () => {
+        const randomValues = [1, 0];
+        const direction = getShotDirection(identity, false, 0, () => randomValues.shift() ?? 0);
+
+        expect(direction.length()).toBeCloseTo(1);
+        expect(THREE.MathUtils.radToDeg(forward.angleTo(direction))).toBeCloseTo(
+            MISSION.hipSpreadDegrees,
+        );
+    });
+
+    it("rotates spread with the camera orientation", () => {
+        const yaw = new THREE.Quaternion().setFromAxisAngle(
+            new THREE.Vector3(0, 1, 0),
+            Math.PI / 2,
+        );
+        const direction = getShotDirection(yaw, true, 0, () => 0);
+
+        expect(direction.x).toBeCloseTo(-1);
+        expect(direction.y).toBeCloseTo(0);
+        expect(direction.z).toBeCloseTo(0);
     });
 });

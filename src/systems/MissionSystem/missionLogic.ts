@@ -1,5 +1,5 @@
-import { MISSION, PLAYER_POSITION } from "../../constants";
-import type { Drone } from "../../types/Drone";
+import { MISSION, PLAYER_POSITION } from "~/constants";
+import type { Drone } from "~/types/Drone";
 
 export type MissionOutcome = "victory" | "defeat" | null;
 

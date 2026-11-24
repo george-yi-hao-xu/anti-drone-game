@@ -2,8 +2,8 @@
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
 import { GameHud } from "./GameHud";
 
 afterEach(() => {

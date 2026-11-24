@@ -1,13 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import * as THREE from "three";
-import { INITIAL_VIEW_PITCH, MISSION } from "../constants";
-import type { Drone, DroneProfile } from "../types/Drone";
-import type { Burst } from "../types/Burst";
-import type { Tracer } from "../types/Tracer";
+import { INITIAL_VIEW_PITCH, MISSION } from "~/constants";
+import type { Drone, DroneProfile } from "~/types/Drone";
+import type { Burst } from "~/types/Burst";
+import type { Tracer } from "~/types/Tracer";
 
 const PHASE_HALF_ARCS = [30, 45, 60] as const;
 const DRONE_SPAWN_MIN_RADIUS = 170;
 const DRONE_SPAWN_RADIUS_VARIATION = 35;
+const MAX_AIM_PITCH = 1.05;
 
 export function createDrones(): Drone[] {
   return Array.from({ length: MISSION.droneCount }, (_, id) => {
@@ -135,7 +136,9 @@ export class RuntimeStore {
 
     registerShot() {
         this.lastShot = this.elapsed;
-        this.recoil = Math.min(0.11, this.recoil + MISSION.recoilKick);
+        this.pitch = Math.min(MAX_AIM_PITCH, this.pitch + MISSION.recoilKick);
+        this.recoil = Math.min(MISSION.maxRecoil, this.recoil + MISSION.recoilKick);
+        this.triggerCameraShake(0.08);
         this.muzzleFlash = 0.045;
     }
 
@@ -171,6 +174,8 @@ export class RuntimeStore {
 
     updateEffects(delta: number) {
         this.muzzleFlash = Math.max(0, this.muzzleFlash - delta);
+
+        // auto reduce recoil
         this.recoil = Math.max(0, this.recoil - delta * 0.12);
         this.cameraShake = Math.max(0, this.cameraShake - delta * 0.65);
 

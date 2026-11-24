@@ -1,11 +1,13 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import * as THREE from "three";
-import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
-import { findHitDrone } from "./weaponLogic";
+import { getWeaponMuzzlePosition, MISSION, PLAYER_POSITION } from "~/constants";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
+import { findHitDrone, getShotDirection } from "./weaponLogic";
+import { playGunfireSound } from "./gunfireAudio";
+import { playReloadSound } from "./reloadAudio";
 
 const MAX_TRACER_DISTANCE = 180;
 
@@ -22,6 +24,7 @@ function beginReload() {
     hud.setReloading(true);
     hud.setMessage("RELOADING");
     runtime.beginReload();
+    playReloadSound();
 }
 
 function completeReload() {
@@ -44,7 +47,7 @@ function fire(camera: THREE.Camera) {
     }
 
     const origin = camera.position.clone();
-    const direction = camera.getWorldDirection(new THREE.Vector3()).normalize();
+    const direction = getShotDirection(camera.quaternion, runtime.aiming, runtime.recoil);
     const hit = findHitDrone(origin, direction, runtime.drones);
     const end = hit
         ? hit.drone.position.clone()
@@ -54,6 +57,7 @@ function fire(camera: THREE.Camera) {
         .add(camera.position);
 
     runtime.registerShot();
+    playGunfireSound();
     runtime.addTracer(tracerStart, end);
 
     if (hit) {

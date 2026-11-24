@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { describe, expect, it } from "vitest";
-import { MISSION, PLAYER_POSITION } from "../../constants";
-import { createDrones } from "../../stores/RuntimeStore";
+import { MISSION, PLAYER_POSITION } from "~/constants";
+import { createDrones } from "~/stores/RuntimeStore";
 import { getBreachedDrones, getMissionOutcome } from "./missionLogic";
 
 describe("mission outcome", () => {

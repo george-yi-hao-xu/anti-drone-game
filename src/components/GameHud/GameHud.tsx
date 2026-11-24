@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { MISSION } from "../../constants";
-import { game } from "../../stores/GameStore";
-import { hud } from "../../stores/HudStore";
-import { runtime } from "../../stores/RuntimeStore";
-import { GameRadar } from "../GameRadar/GameRadar";
+import type { CSSProperties } from "react";
+import { MISSION } from "~/constants";
+import { GameRadar } from "~/components/GameRadar/GameRadar";
+import { game } from "~/stores/GameStore";
+import { hud } from "~/stores/HudStore";
+import { runtime } from "~/stores/RuntimeStore";
 import "./GameHud.scss";
 
 const LOW_AMMO_THRESHOLD = 5;
@@ -33,6 +34,9 @@ export const GameHud = observer(() => {
             ),
         )
         : 0;
+    const recoilBloom = Math.min(1, runtime.recoil / MISSION.maxRecoil) * 8;
+    const reticleHalfGap = 3 + (1 - runtime.aimProgress) * 13 + recoilBloom;
+    const reticleOpacity = Math.max(0, 1 - runtime.aimProgress);
 
     return (
         <aside className="game-hud" aria-label="Combat status">
@@ -77,7 +81,14 @@ export const GameHud = observer(() => {
             </div>
 
             {/* 屏幕中央的准星  */}
-            <div className={`game-hud__reticle ${runtime.aiming ? 'is-aiming' : ''}`} aria-hidden="true" />
+            <div
+                className="game-hud__reticle"
+                style={{
+                    "--reticle-half-gap": `${reticleHalfGap}px`,
+                    opacity: reticleOpacity,
+                } as CSSProperties}
+                aria-hidden="true"
+            />
 
             {hud.ammo > 0 && hud.ammo < LOW_AMMO_THRESHOLD && !hud.reloading && (
                 <div className="game-hud__reload-prompt">Press R to reload</div>

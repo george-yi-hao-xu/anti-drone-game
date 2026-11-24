@@ -1,11 +1,11 @@
-import { Arena } from "../Arena/Arena";
-import { DroneWave } from "../DroneWave/DroneWave";
-import { WeaponEffects } from "../WeaponEffects/WeaponEffects";
-import { WeaponModel } from "../WeaponModel/WeaponModel";
-import { GameLoop } from "../../systems/GameLoop/GameLoop";
-import { MissionSystem } from "../../systems/MissionSystem/MissionSystem";
-import { PlayerControls } from "../../systems/PlayerControls/PlayerControls";
-import { WeaponSystem } from "../../systems/WeaponSystem/WeaponSystem";
+import { Arena } from "~/components/Arena/Arena";
+import { DroneWave } from "~/components/DroneWave/DroneWave";
+import { WeaponEffects } from "~/components/WeaponEffects/WeaponEffects";
+import { WeaponModel } from "~/components/WeaponModel/WeaponModel";
+import { GameLoop } from "~/systems/GameLoop/GameLoop";
+import { MissionSystem } from "~/systems/MissionSystem/MissionSystem";
+import { PlayerControls } from "~/systems/PlayerControls/PlayerControls";
+import { WeaponSystem } from "~/systems/WeaponSystem/WeaponSystem";
 
 export const World = () => (
     <>

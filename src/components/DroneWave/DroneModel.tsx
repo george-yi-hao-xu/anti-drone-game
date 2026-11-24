@@ -1,8 +1,8 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
-import { runtime } from "../../stores/RuntimeStore";
-import type { Drone } from "../../types/Drone";
+import { runtime } from "~/stores/RuntimeStore";
+import type { Drone } from "~/types/Drone";
 import { DRONE_TARGET } from "./droneMotion";
 
 const BODY_COLORS = {

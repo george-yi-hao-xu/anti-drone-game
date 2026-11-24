@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
-import { MISSION } from "../../constants";
+import { MISSION } from "~/constants";
 import {
     BEARING_PANELS,
     CARDINAL_PANELS,
@@ -51,14 +51,16 @@ const PositionPanel = ({ position, rotationY, label, variant, accent }: Position
     useEffect(() => () => texture.dispose(), [texture]);
 
     const isCardinal = variant === "cardinal";
-    const width = isCardinal ? 4.8 : 4;
-    const height = isCardinal ? 2.6 : 2;
+
+    // panel size
+    const width = isCardinal ? 3 : 2;
+    const height = isCardinal ? 1.8 : 1;
     const centerY = height / 2 + 0.05;
 
     return (
         <group position={[...position]} rotation={[0, rotationY, 0]}>
             <mesh castShadow receiveShadow position={[0, centerY, 0]}>
-                <boxGeometry args={[width, height, 0.2]} />
+                <boxGeometry args={[width, height, 0]} />
                 <meshStandardMaterial color="#293124" roughness={0.88} metalness={0.04} />
             </mesh>
 
