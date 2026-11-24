@@ -138,4 +138,23 @@ describe("HUD state", () => {
         runtime.updateAim(1);
         expect(runtime.aimProgress).toBeCloseTo(0, 3);
     });
+
+    it("keeps shot recoil in the aim until the player corrects it", () => {
+        const { runtime } = createStores();
+        const initialPitch = runtime.pitch;
+
+        runtime.registerShot();
+
+        expect(runtime.pitch).toBeCloseTo(initialPitch + MISSION.recoilKick);
+        expect(runtime.cameraShake).toBe(0.08);
+
+        runtime.updateEffects(1);
+
+        expect(runtime.pitch).toBeCloseTo(initialPitch + MISSION.recoilKick);
+        expect(runtime.recoil).toBe(0);
+
+        runtime.pitch = 1.04;
+        runtime.registerShot();
+        expect(runtime.pitch).toBe(1.05);
+    });
 });
