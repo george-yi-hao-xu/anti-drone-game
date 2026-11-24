@@ -8,6 +8,8 @@ export interface PositionPanelConfig {
     accent?: string;
 }
 
+const NUM_MARK = 12
+
 const CARDINAL_COLORS = {
     N: "#27d7ff",
     E: "#ffcb45",
@@ -15,26 +17,26 @@ const CARDINAL_COLORS = {
     W: "#8bf08f",
 } as const;
 
-export const CARDINAL_PANEL_RADIUS = 30;
-export const BEARING_PANEL_RADIUS = 42;
+export const CARDINAL_PANEL_RADIUS = 60;
+export const BEARING_PANEL_RADIUS = 15;
 
 const CARDINAL_LABELS = new Map<number, keyof typeof CARDINAL_COLORS>([
     [0, "N"],
-    [4, "E"],
-    [8, "S"],
-    [12, "W"],
+    [NUM_MARK / 4, "E"],
+    [NUM_MARK / 4 * 2, "S"],
+    [NUM_MARK / 4 * 3, "W"],
 ]);
 
 const panelRotationTowardOrigin = (x: number, z: number) => Math.atan2(-x, -z);
 
 export const formatBearingLabel = (index: number) => {
-    const cardinal = CARDINAL_LABELS.get(index);
+    // const cardinal = CARDINAL_LABELS.get(index);
 
-    if (cardinal) {
-        return cardinal;
-    }
+    // if (cardinal) {
+    //     return cardinal;
+    // }
 
-    return Math.round(index * 22.5)
+    return Math.round(index * 360 / NUM_MARK)
         .toString()
         .padStart(3, "0");
 };
@@ -53,13 +55,14 @@ export const CARDINAL_PANELS: PositionPanelConfig[] = [
 }));
 
 export const BEARING_PANELS: PositionPanelConfig[] = Array.from(
-    { length: 16 },
+    { length: NUM_MARK },
     (_, index) => {
-        const angle = (index / 16) * Math.PI * 2;
+        const angle = (index / NUM_MARK) * Math.PI * 2;
         const x = Math.sin(angle) * BEARING_PANEL_RADIUS;
         const z = -Math.cos(angle) * BEARING_PANEL_RADIUS;
         const label = formatBearingLabel(index);
-        const cardinal = CARDINAL_LABELS.get(index);
+        // const cardinal = CARDINAL_LABELS.get(index);
+        const cardinal  = false;
 
         return {
             position: [x, 0, z] as const,

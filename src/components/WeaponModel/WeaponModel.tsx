@@ -36,10 +36,12 @@ export const WeaponModel = () => {
 
         weapon.current.visible = game.phase === "playing" || game.phase === "paused";
         const viewPosition = getWeaponViewPosition(runtime.aimProgress);
+
+        // recoil to weapon
         localPosition.set(
-            viewPosition[0],
-            viewPosition[1],
-            viewPosition[2] + runtime.recoil * 2.1,
+            viewPosition[0] + runtime.recoil * 0.2, // hori
+            viewPosition[1] + runtime.recoil * (-0.8),
+            viewPosition[2] + runtime.recoil * 0.5,
         );
         weapon.current.position
             .copy(localPosition)
