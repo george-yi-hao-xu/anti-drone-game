@@ -7,6 +7,7 @@ import { hud } from "~/stores/HudStore";
 import { runtime } from "~/stores/RuntimeStore";
 import { findHitDrone } from "./weaponLogic";
 import { playGunfireSound } from "./gunfireAudio";
+import { playReloadSound } from "./reloadAudio";
 
 const MAX_TRACER_DISTANCE = 180;
 
@@ -23,6 +24,7 @@ function beginReload() {
     hud.setReloading(true);
     hud.setMessage("RELOADING");
     runtime.beginReload();
+    playReloadSound();
 }
 
 function completeReload() {
